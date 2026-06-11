@@ -1,5 +1,7 @@
 # CristianBot — Apartamento Aqualina Orange (Girardot)
 
+**Producción:** [appgirardot.vercel.app](https://appgirardot.vercel.app)
+
 Agente autónomo de venta: una página con chat de IA que responde todo sobre el apartamento, califica a los interesados (HOT/WARM/COLD), detecta intentos de estafa y le avisa a Cristian solo cuando vale la pena.
 
 ## Stack
