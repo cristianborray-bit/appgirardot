@@ -50,6 +50,10 @@ export async function POST(req: Request) {
   } catch {
     return new Response("Solicitud inválida.", { status: 400 });
   }
+  // JSON.parse("null") es válido: sin este guard, desestructurar explota.
+  if (body === null || typeof body !== "object") {
+    return new Response("Solicitud inválida.", { status: 400 });
+  }
 
   const { sessionKey, text } = body;
 

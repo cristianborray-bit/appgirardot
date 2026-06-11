@@ -6,18 +6,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   QUICK_REPLIES,
   WELCOME_MESSAGE,
-  SESSION_KEY_PATTERN,
+  getSessionKey,
   messageText,
 } from "@/lib/chat-content";
-
-function newSessionKey(): string {
-  if (typeof window === "undefined") return "";
-  const stored = window.localStorage.getItem("cb_session");
-  if (stored && SESSION_KEY_PATTERN.test(stored)) return stored;
-  const fresh = crypto.randomUUID();
-  window.localStorage.setItem("cb_session", fresh);
-  return fresh;
-}
 
 // El servidor responde sus límites con textos amigables en español; cuando el
 // mensaje parece eso (corto y sin restos técnicos) se muestra tal cual como
@@ -60,7 +51,7 @@ function Burbuja({
 }
 
 export function Chat() {
-  const [sessionKey] = useState(newSessionKey);
+  const [sessionKey] = useState(getSessionKey);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 

@@ -7,6 +7,17 @@ import type { UIMessage } from "ai";
 // la valida con el MISMO patrón para que no puedan divergir.
 export const SESSION_KEY_PATTERN = /^[\w-]{8,64}$/;
 
+// La misma clave la usan el chat y el formulario de contacto: así el lead
+// queda ligado a su conversación. Vive en localStorage del navegador.
+export function getSessionKey(): string {
+  if (typeof window === "undefined") return "";
+  const stored = window.localStorage.getItem("cb_session");
+  if (stored && SESSION_KEY_PATTERN.test(stored)) return stored;
+  const fresh = crypto.randomUUID();
+  window.localStorage.setItem("cb_session", fresh);
+  return fresh;
+}
+
 export function messageText(message: UIMessage): string {
   return message.parts
     .map((part) => (part.type === "text" ? part.text : ""))
