@@ -6,6 +6,9 @@ import "./globals.css";
 
 export const viewport: Viewport = {
   themeColor: "#16334f",
+  // Con el chat a pantalla completa, el teclado del celular debe EMPUJAR el
+  // contenido (no taparlo): así la cajita de escribir queda siempre visible.
+  interactiveWidget: "resizes-content",
 };
 
 export const metadata: Metadata = {

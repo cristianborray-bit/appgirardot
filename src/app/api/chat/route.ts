@@ -103,7 +103,7 @@ export async function POST(req: Request) {
   const history = await loadConversation(sessionKey);
   if (history.length >= MAX_MESSAGES) {
     return new Response(
-      "Llevamos una conversación larga 😊. Para seguir, lo mejor es que Cristian te atienda en persona: déjame tu nombre y correo.",
+      "Llevamos una conversación larga 😊. Para seguir, mejor que Cristian te atienda en persona: toca el botón \"Que Cristian me contacte\" aquí abajo.",
       { status: 400 },
     );
   }

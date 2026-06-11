@@ -18,6 +18,30 @@ export function getSessionKey(): string {
   return fresh;
 }
 
+// "¿Ya dejó sus datos?" como mini-store sobre localStorage, para leerlo con
+// useSyncExternalStore (seguro en SSR y sin setState dentro de efectos).
+let leadListeners: Array<() => void> = [];
+
+export function marcarLeadEnviado(nombre: string) {
+  window.localStorage.setItem("cb_lead", nombre);
+  for (const avisar of leadListeners) avisar();
+}
+
+export function suscribirLeadEnviado(listener: () => void) {
+  leadListeners.push(listener);
+  return () => {
+    leadListeners = leadListeners.filter((l) => l !== listener);
+  };
+}
+
+export function leadEnviadoSnapshot(): boolean {
+  return window.localStorage.getItem("cb_lead") !== null;
+}
+
+export function leadEnviadoServerSnapshot(): boolean {
+  return false;
+}
+
 export function messageText(message: UIMessage): string {
   return message.parts
     .map((part) => (part.type === "text" ? part.text : ""))

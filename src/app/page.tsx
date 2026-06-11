@@ -1,6 +1,5 @@
-import { Chat } from "@/components/chat";
+import { ChatSection } from "@/components/chat-section";
 import { Galeria } from "@/components/galeria";
-import { LeadForm } from "@/components/lead-form";
 
 const CARACTERISTICAS = [
   "84 m²",
@@ -62,30 +61,11 @@ export default function Home() {
         </section>
 
         <section aria-label="Chat con el asistente virtual">
-          <Chat />
+          <ChatSection />
         </section>
       </main>
 
       <Galeria />
-
-      <section
-        id="contacto"
-        aria-label="Déjale tus datos a Cristian"
-        className="border-t border-agua-borde bg-agua/60"
-      >
-        <div className="mx-auto w-full max-w-3xl px-4 py-12">
-          <h2 className="text-balance text-center font-display text-3xl font-semibold">
-            ¿Te interesó? Déjale tus datos a Cristian
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-center leading-relaxed text-magdalena-suave">
-            Respondes tres preguntas rápidas (si quieres) y Cristian te
-            contacta directamente. Sin intermediarios y sin compromiso.
-          </p>
-          <div className="mt-8">
-            <LeadForm />
-          </div>
-        </div>
-      </section>
 
       <footer className="border-t border-agua-borde px-4 py-6 text-center text-sm leading-6 text-magdalena-suave">
         Transversal 26 No. 05A-02, Vía Nariño, Girardot (Cundinamarca)

@@ -10,6 +10,9 @@ import {
   MAX_PHONE_LENGTH,
 } from "@/lib/lead-content";
 
+// Widget de captura que vive DENTRO del chat, como una burbuja más de la
+// conversación: el visitante deja sus datos sin salir de la pantalla.
+
 type Estado =
   | { fase: "formulario"; error?: string }
   | { fase: "enviando" }
@@ -32,7 +35,7 @@ function Pregunta({
         {titulo}{" "}
         <span className="font-normal text-magdalena-suave">(opcional)</span>
       </legend>
-      <div className="mt-2.5 grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {options.map(({ value, label }) => {
           const active = selected === value;
           return (
@@ -57,7 +60,13 @@ function Pregunta({
   );
 }
 
-export function LeadForm() {
+export function CapturaLead({
+  onListo,
+  onCerrar,
+}: {
+  onListo: (nombre: string) => void;
+  onCerrar: () => void;
+}) {
   const [estado, setEstado] = useState<Estado>({ fase: "formulario" });
   const [budget, setBudget] = useState<string | null>(null);
   const [timeline, setTimeline] = useState<string | null>(null);
@@ -65,8 +74,7 @@ export function LeadForm() {
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const datos = new FormData(form);
+    const datos = new FormData(e.currentTarget);
     const nombre = String(datos.get("nombre") ?? "").trim();
 
     setEstado({ fase: "enviando" });
@@ -95,10 +103,12 @@ export function LeadForm() {
         return;
       }
       setEstado({ fase: "listo", nombre });
+      onListo(nombre);
     } catch {
       setEstado({
         fase: "formulario",
-        error: "No pude guardar tus datos 🙏. Revisa tu conexión e inténtalo de nuevo.",
+        error:
+          "No pude guardar tus datos 🙏. Revisa tu conexión e inténtalo de nuevo.",
       });
     }
   }
@@ -107,17 +117,15 @@ export function LeadForm() {
     return (
       <div
         role="status"
-        className="rounded-3xl border border-agua-borde bg-white p-6 text-center sm:p-8"
+        className="rounded-2xl rounded-bl-md border border-agua-borde bg-white px-4 py-4 text-center"
       >
-        <p aria-hidden="true" className="text-4xl">
+        <p aria-hidden="true" className="text-3xl">
           🤝
         </p>
-        <h3 className="mt-3 font-display text-2xl font-semibold">
-          ¡Listo, {estado.nombre}!
-        </h3>
-        <p className="mx-auto mt-2 max-w-md leading-relaxed text-magdalena-suave">
-          Cristian recibió tus datos y te va a escribir al correo. Mientras
-          tanto, el asistente de arriba te responde cualquier duda al instante.
+        <p className="mt-2 font-bold">¡Listo, {estado.nombre}!</p>
+        <p className="mt-1 leading-relaxed text-magdalena-suave">
+          Cristian recibió tus datos y te escribirá al correo. Si tienes más
+          preguntas, aquí sigo.
         </p>
       </div>
     );
@@ -128,8 +136,25 @@ export function LeadForm() {
   return (
     <form
       onSubmit={enviar}
-      className="space-y-6 rounded-3xl border border-agua-borde bg-white p-5 sm:p-8"
+      className="space-y-5 rounded-2xl rounded-bl-md border border-agua-borde bg-white p-4"
     >
+      <div className="flex items-start justify-between gap-2">
+        <p className="font-bold leading-snug">
+          📝 Que Cristian te contacte
+          <span className="block text-sm font-normal text-magdalena-suave">
+            Solo nombre y correo. Lo demás es opcional.
+          </span>
+        </p>
+        <button
+          type="button"
+          onClick={onCerrar}
+          aria-label="Ahora no, cerrar formulario"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl text-magdalena-suave hover:bg-agua focus-visible:outline-2 focus-visible:outline-mango-oscuro"
+        >
+          ✕
+        </button>
+      </div>
+
       <Pregunta
         titulo="¿Cuál es tu presupuesto?"
         options={BUDGET_OPTIONS}
@@ -149,7 +174,7 @@ export function LeadForm() {
         onSelect={setFinancing}
       />
 
-      <div className="grid gap-4 border-t border-agua-borde pt-6 sm:grid-cols-2">
+      <div className="space-y-4 border-t border-agua-borde pt-4">
         <div>
           <label htmlFor="lead-nombre" className="font-bold">
             Tu nombre
@@ -178,7 +203,7 @@ export function LeadForm() {
             className="mt-1.5 h-12 w-full rounded-xl border border-agua-borde px-4 text-[16px] placeholder:text-magdalena-suave/60 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-mango-oscuro"
           />
         </div>
-        <div className="sm:col-span-2">
+        <div>
           <label htmlFor="lead-celular" className="font-bold">
             Tu celular{" "}
             <span className="font-normal text-magdalena-suave">(opcional)</span>
@@ -218,14 +243,13 @@ export function LeadForm() {
       <button
         type="submit"
         disabled={enviando}
-        className="h-14 w-full rounded-xl bg-mango-oscuro px-6 text-lg font-bold text-white hover:bg-magdalena disabled:opacity-50 disabled:hover:bg-mango-oscuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+        className="h-12 w-full rounded-xl bg-mango-oscuro px-5 font-bold text-white hover:bg-magdalena disabled:opacity-50 disabled:hover:bg-mango-oscuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
       >
         {enviando ? "Enviando…" : "Enviar mis datos a Cristian"}
       </button>
 
       <p className="text-center text-sm leading-6 text-magdalena-suave">
-        Tus datos solo los ve Cristian, el dueño. Sin spam y sin compartirlos
-        con nadie.
+        Tus datos solo los ve Cristian, el dueño. Sin spam.
       </p>
     </form>
   );

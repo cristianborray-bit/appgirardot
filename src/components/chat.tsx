@@ -2,13 +2,24 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import {
   QUICK_REPLIES,
   WELCOME_MESSAGE,
   getSessionKey,
   messageText,
+  marcarLeadEnviado,
+  suscribirLeadEnviado,
+  leadEnviadoSnapshot,
+  leadEnviadoServerSnapshot,
 } from "@/lib/chat-content";
+import { CapturaLead } from "@/components/lead-form";
 
 // El servidor responde sus límites con textos amigables en español; cuando el
 // mensaje parece eso (corto y sin restos técnicos) se muestra tal cual como
@@ -50,10 +61,30 @@ function Burbuja({
   );
 }
 
-export function Chat() {
+export function Chat({
+  className = "",
+  onCerrar,
+}: {
+  className?: string;
+  // En celular el chat se abre a pantalla completa; este callback es el
+  // botón "← Volver" de la barra superior (oculto en computador).
+  onCerrar?: () => void;
+}) {
   const [sessionKey] = useState(getSessionKey);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Captura de datos dentro del chat: el widget aparece como una burbuja
+  // más de la conversación. localStorage recuerda que ya dejó sus datos.
+  const [mostrarCaptura, setMostrarCaptura] = useState(false);
+  // Largo de la conversación al enviar los datos: la tarjeta "¡Listo!" se
+  // muestra hasta que la conversación continúe (estado derivado, sin efectos).
+  const [lenAlEnviar, setLenAlEnviar] = useState<number | null>(null);
+  const yaEnviado = useSyncExternalStore(
+    suscribirLeadEnviado,
+    leadEnviadoSnapshot,
+    leadEnviadoServerSnapshot,
+  );
 
   const transport = useMemo(
     () =>
@@ -107,10 +138,20 @@ export function Chat() {
   const hasUserMessage = messages.some((m) => m.role === "user");
   const notice = error ? friendlyError(error) : null;
 
+  function capturaLista(nombre: string) {
+    marcarLeadEnviado(nombre);
+    setLenAlEnviar(messages.length);
+  }
+
+  // El widget se ve mientras esté abierto; tras enviar, su tarjeta "¡Listo!"
+  // se despide sola cuando la conversación continúa.
+  const capturaVisible =
+    mostrarCaptura && (lenAlEnviar === null || lenAlEnviar === messages.length);
+
   useEffect(() => {
     const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, status]);
+  }, [messages, status, capturaVisible]);
 
   function send(text: string) {
     const trimmed = text.trim();
@@ -120,8 +161,18 @@ export function Chat() {
   }
 
   return (
-    <div className="flex h-[72dvh] min-h-[480px] flex-col overflow-hidden rounded-3xl border border-agua-borde bg-white shadow-sm sm:h-[620px]">
-      <div className="flex items-center gap-3 border-b border-agua-borde px-4 py-3">
+    <div className={`flex flex-col overflow-hidden bg-white ${className}`}>
+      <div className="flex items-center gap-2 border-b border-agua-borde px-3 py-3 sm:px-4">
+        {onCerrar && (
+          <button
+            type="button"
+            onClick={onCerrar}
+            aria-label="Volver a la página"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-2xl hover:bg-agua focus-visible:outline-2 focus-visible:outline-mango-oscuro lg:hidden"
+          >
+            ←
+          </button>
+        )}
         <div
           aria-hidden="true"
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-mango-suave text-xl"
@@ -154,6 +205,17 @@ export function Chat() {
           </Burbuja>
         ))}
 
+        {capturaVisible && (
+          <div className="flex justify-start">
+            <div className="w-full max-w-[92%]">
+              <CapturaLead
+                onListo={capturaLista}
+                onCerrar={() => setMostrarCaptura(false)}
+              />
+            </div>
+          </div>
+        )}
+
         {status === "submitted" && (
           <div className="flex justify-start">
             <div
@@ -178,20 +240,37 @@ export function Chat() {
         )}
       </div>
 
-      {!hasUserMessage && (
-        <div className="grid grid-cols-2 gap-2 border-t border-agua-borde px-3 pt-3">
-          {QUICK_REPLIES.map(({ emoji, label }) => (
+      <div className="space-y-2 border-t border-agua-borde px-3 pt-3">
+        {!hasUserMessage && (
+          <div className="grid grid-cols-2 gap-2">
+            {QUICK_REPLIES.map(({ emoji, label }) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => send(label)}
+                className="min-h-12 rounded-xl border border-mango bg-white px-3 py-2.5 text-[15px] font-bold leading-snug hover:bg-mango-suave focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+              >
+                <span aria-hidden="true">{emoji}</span> {label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {!capturaVisible &&
+          (yaEnviado ? (
+            <p className="flex min-h-12 items-center justify-center rounded-xl border border-agua-borde bg-agua px-3 text-[15px] font-bold text-magdalena-suave">
+              ✓ Cristian te contactará pronto
+            </p>
+          ) : (
             <button
-              key={label}
               type="button"
-              onClick={() => send(label)}
-              className="min-h-12 rounded-xl border border-mango bg-white px-3 py-2.5 text-[15px] font-bold leading-snug hover:bg-mango-suave focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+              onClick={() => setMostrarCaptura(true)}
+              className="min-h-12 w-full rounded-xl border-2 border-mango bg-white px-3 text-[15px] font-bold hover:bg-mango-suave focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
             >
-              <span aria-hidden="true">{emoji}</span> {label}
+              📝 Que Cristian me contacte
             </button>
           ))}
-        </div>
-      )}
+      </div>
 
       <form
         className="flex gap-2 p-3"
