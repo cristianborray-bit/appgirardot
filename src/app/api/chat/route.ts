@@ -100,7 +100,15 @@ export async function POST(req: Request) {
     model: openai(process.env.OPENAI_MODEL ?? DEFAULT_MODEL),
     system,
     messages: await convertToModelMessages(messages),
-    maxOutputTokens: 600,
+    // Los gpt-5 son modelos razonadores: el presupuesto de tokens cubre
+    // también su razonamiento interno. Con 600 se quedaba mudo (length).
+    maxOutputTokens: 2_500,
+    providerOptions: {
+      openai: {
+        reasoningEffort: "minimal",
+        textVerbosity: "low",
+      },
+    },
   });
 
   return result.toUIMessageStreamResponse({
