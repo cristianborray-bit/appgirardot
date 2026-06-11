@@ -58,15 +58,16 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** ✅ [appgirardot.vercel.app](https://appgirardot.vercel.app) — chat respondiendo en producción
 **Nota:** las variables de entorno de Vercel solo aplican a deployments nuevos; si se cambian, hay que redesplegar (un push basta)
 
-## FASE 2 — Experiencia + Leads `[estado: ⬜ pendiente]`
+## FASE 2 — Experiencia + Leads `[estado: 🔄 en curso — leads vivos; galería/video esperando material]`
 
-- [ ] Galería de fotos (Supabase Storage) + video tour (YouTube oculto embebido)
-- [ ] Flujo de calificación con botones: presupuesto, timeline, financiación
-- [ ] Captura de lead (nombre + email obligatorios, teléfono opcional) ligada a su conversación
-- [ ] OG tags: vista previa atractiva al compartir el link por WhatsApp/Facebook
+- [x] Flujo de calificación con botones: presupuesto, timeline, financiación (valores espejo de los check constraints de la tabla `leads`; los tres grupos opcionales, con des-selección)
+- [x] Captura de lead (nombre + email obligatorios, teléfono opcional ≥7 dígitos) ligada a su conversación — reenviar el formulario actualiza el lead (índice único por conversación), campo trampa anti-bots, rate limit propio
+- [x] Infraestructura de galería + video lista y "auto-encendible": bucket público `galeria` en Storage, manifiesto editable `content/galeria.json`, grid de fotos (next/image) y embed YouTube-nocookie que aparecen solos al llenar el manifiesto. La carpeta de Drive de Cristian ("videos y fotos apto girardot") ya está visible para la sesión; cuando suba el material, se ingiere a Storage y se llena el manifiesto
+- [ ] Fotos + video reales publicados (bloqueado por material de Cristian)
+- [ ] OG tags con foto real: vista previa atractiva al compartir por WhatsApp/Facebook (los OG de texto existen desde Fase 1; la imagen entra con la primera foto)
 
 **Entregable:** flujo completo de usuario guardándose en Supabase
-**Requiere de Cristian:** fotos y video del apto
+**Requiere de Cristian:** subir fotos y video a su carpeta de Drive "videos y fotos apto girardot"
 
 ## FASE 3 — Scoring + Panel `[estado: ⬜ pendiente]`
 
