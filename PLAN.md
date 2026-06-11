@@ -43,7 +43,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** URL viva con página base + tablas creadas
 **Cómo conectar (Cristian, 2 min):** entrar a [vercel.com/new](https://vercel.com/new) → "Import Git Repository" → elegir `cristianborray-bit/appgirardot` → botón "Deploy" (Next.js se detecta solo, sin cambiar nada). Desde ahí, cada push mío se despliega automáticamente y yo monitoreo los deployments desde la sesión.
 
-## FASE 1 — Chat MVP `[estado: 🔄 código completo y verificado — falta prueba en vivo]`
+## FASE 1 — Chat MVP `[estado: ✅ completada — chat vivo en producción]`
 
 - [x] Ficha del apto en archivo editable (`content/apartamento.md`) — sin datos sensibles
 - [x] Prompt de sistema del bot (con skill `prompt-master`): transparencia "soy una IA", tono cálido, informar primero, calificación suave, respuestas anti-scam — los secretos NO están en el prompt (no puede filtrarlos)
@@ -52,13 +52,10 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [x] Guardar TODAS las conversaciones en Supabase (se activa al poner `SUPABASE_SECRET_KEY` en Vercel; sin la clave el chat funciona igual)
 - [x] Rate limiting básico: 10 req/min por IP y por sesión + topes de longitud y de historial (endurecimiento definitivo en Fase 5)
 - [x] Revisión de código (7 ángulos): corregidos tope de historial forjado, trazado del archivo de ficha al bundle, errores del servidor visibles en el chat, guard `server-only`
-- [ ] **Prueba en vivo del chat con OpenAI** — imposible desde este sandbox (la red bloquea api.openai.com); se hace sobre el deploy de Vercel apenas estén las variables
+- [x] **Prueba en vivo del chat con OpenAI** — verificada de punta a punta el 2026-06-11 vía HTTP desde la base de datos (el sandbox no tiene red directa): respuesta real con los precios correctos + conversación persistida en Supabase. Bug encontrado y corregido en vivo: gpt-5-mini razonador se quedaba mudo con 600 tokens → 2500 + `reasoningEffort: minimal` + `textVerbosity: low`
 
-**Entregable:** chateas con el bot desde tu celular en una URL real
-**Requiere de Cristian:** conectar Vercel (paso de Fase 0) + pegar 3 variables en Vercel → Settings → Environment Variables:
-1. `OPENAI_API_KEY` = tu clave de OpenAI
-2. `NEXT_PUBLIC_SUPABASE_URL` = `https://umqotxoixboqkgerlupy.supabase.co`
-3. `SUPABASE_SECRET_KEY` = en [supabase.com/dashboard](https://supabase.com/dashboard) → proyecto **appgirardot** → Project Settings → API Keys → crear/copiar la **secret key**
+**Entregable:** ✅ [appgirardot.vercel.app](https://appgirardot.vercel.app) — chat respondiendo en producción
+**Nota:** las variables de entorno de Vercel solo aplican a deployments nuevos; si se cambian, hay que redesplegar (un push basta)
 
 ## FASE 2 — Experiencia + Leads `[estado: ⬜ pendiente]`
 
@@ -111,8 +108,8 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 ## Pendientes de Cristian
 
 - [x] **"Aprobado"** para arrancar Fase 0 — dado el 2026-06-11
-- [ ] Conectar GitHub↔Vercel (2 min): [vercel.com/new](https://vercel.com/new) → Import `cristianborray-bit/appgirardot` → Deploy
-- [ ] `OPENAI_API_KEY` → para Fase 1 (se pega en Vercel, nunca en el chat ni en el repo)
+- [x] Conectar GitHub↔Vercel — hecho: auto-deploy funcionando
+- [x] `OPENAI_API_KEY` + variables de Supabase en Vercel — hechas y verificadas en vivo
 - [ ] Fotos + video del apto → para Fase 2
 - [ ] Cuenta en resend.com + API key → para Fase 4
 - [ ] Dominio elegido y comprado → para Fase 5. Candidatos libres a $11.25/año: `aqualinagirardot.com` · `aptoaqualina.com` · `aptogirardot.com` · `ventaaptogirardot.com`
