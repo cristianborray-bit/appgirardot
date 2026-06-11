@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, type UIMessage } from "ai";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   QUICK_REPLIES,
@@ -19,17 +19,21 @@ function newSessionKey(): string {
   return fresh;
 }
 
-// El servidor responde errores con textos amigables en español; se muestran
-// tal cual cuando parecen eso (cortos y sin restos técnicos).
-function friendlyError(error: Error): string {
+// El servidor responde sus límites con textos amigables en español; cuando el
+// mensaje parece eso (corto y sin restos técnicos) se muestra tal cual como
+// aviso tranquilo. La alarma roja queda solo para fallas de verdad.
+function friendlyError(error: Error): { text: string; isNotice: boolean } {
   const message = error.message?.trim() ?? "";
   const looksFriendly =
     message.length > 0 &&
     message.length <= 200 &&
     !/[<>{}]|fetch|network|http/i.test(message);
   return looksFriendly
-    ? message
-    : "No pude responder en este momento 🙏. Espera un momentico y vuelve a intentarlo.";
+    ? { text: message, isNotice: true }
+    : {
+        text: "No pude responder en este momento 🙏. Espera un momentico y vuelve a intentarlo.",
+        isNotice: false,
+      };
 }
 
 function Burbuja({
@@ -64,15 +68,53 @@ export function Chat() {
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
-        body: () => ({ sessionKey }),
+        // Solo viaja el texto nuevo: el historial vive en Supabase y lo
+        // reconstruye el servidor (el navegador no puede inventarlo).
+        prepareSendMessagesRequest: ({ messages }) => ({
+          body: {
+            sessionKey,
+            text: messageText(messages[messages.length - 1]),
+          },
+        }),
       }),
     [sessionKey],
   );
 
-  const { messages, sendMessage, status, error } = useChat({ transport });
+  const { messages, sendMessage, status, error, setMessages } = useChat({
+    transport,
+  });
+
+  // Si esta sesión ya tenía conversación (p. ej. recargó la página), se
+  // retoma desde el servidor para que vea lo que ya habían hablado. El ref
+  // garantiza UNA sola carga aunque el efecto se re-ejecute.
+  const hydratedRef = useRef(false);
+  useEffect(() => {
+    if (hydratedRef.current || !sessionKey) return;
+    hydratedRef.current = true;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/chat?session=${encodeURIComponent(sessionKey)}`,
+        );
+        if (!res.ok) return;
+        const data = (await res.json()) as { messages?: UIMessage[] };
+        const previous = data.messages;
+        if (cancelled || !previous || previous.length === 0) return;
+        // Solo si aún no escribió nada: jamás pisar mensajes en curso.
+        setMessages((current) => (current.length === 0 ? previous : current));
+      } catch {
+        // Sin historial no pasa nada: el chat arranca desde la bienvenida.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionKey, setMessages]);
 
   const busy = status === "submitted" || status === "streaming";
   const hasUserMessage = messages.some((m) => m.role === "user");
+  const notice = error ? friendlyError(error) : null;
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -132,9 +174,15 @@ export function Chat() {
           </div>
         )}
 
-        {error && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-900">
-            {friendlyError(error)}
+        {notice && (
+          <div
+            className={
+              notice.isNotice
+                ? "rounded-2xl border border-mango/40 bg-mango-suave px-4 py-3"
+                : "rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-900"
+            }
+          >
+            {notice.text}
           </div>
         )}
       </div>

@@ -1,76 +1,76 @@
-import { streamText, convertToModelMessages, type UIMessage } from "ai";
+import {
+  streamText,
+  convertToModelMessages,
+  createIdGenerator,
+  type UIMessage,
+} from "ai";
 import { openai } from "@ai-sdk/openai";
 import { getSystemPrompt } from "@/lib/prompt";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { loadConversation, saveConversation } from "@/lib/conversations";
 import { isRateLimited } from "@/lib/rate-limit";
-import { SESSION_KEY_PATTERN, messageText } from "@/lib/chat-content";
+import { SESSION_KEY_PATTERN } from "@/lib/chat-content";
 
 export const maxDuration = 60;
 
 const DEFAULT_MODEL = "gpt-5-mini"; // económico; se cambia con OPENAI_MODEL en Vercel
 
-// Topes sobre el historial que envía el cliente. El array de mensajes es
-// forjable (no se reconstruye del servidor todavía); estos límites + el rate
-// limit por IP acotan el costo. Endurecimiento definitivo: Fase 5.
+// El navegador solo envía { sessionKey, text }: el historial vive en Supabase
+// y lo reconstruye el servidor, así que no se puede forjar ni inflar desde el
+// cliente. Topes restantes: longitud del mensaje nuevo (igual al maxLength de
+// la cajita del chat) y total de mensajes por conversación.
 const MAX_MESSAGES = 40;
 const MAX_TEXT_LENGTH = 1_000;
-const MAX_TOTAL_TEXT = 12_000;
 
-async function saveConversation(sessionKey: string, messages: UIMessage[]) {
-  const supabase = getSupabaseAdmin();
-  if (!supabase) return;
+// IDs generados en el servidor (recomendación del AI SDK para persistencia:
+// evita choques con los IDs que inventa cada navegador).
+const newMessageId = createIdGenerator({ prefix: "msg", size: 16 });
 
-  const { error } = await supabase.from("conversations").upsert(
-    {
-      session_key: sessionKey,
-      messages,
-      message_count: messages.length,
-    },
-    { onConflict: "session_key" },
-  );
-  if (error) console.error("[chat] Error guardando conversación:", error.message);
+function clientIp(req: Request): string {
+  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+}
+
+// Historial de la sesión, para retomar la conversación al recargar la página.
+// La clave de sesión actúa como llave: es un UUID aleatorio imposible de
+// adivinar que solo existe en el navegador que inició la conversación.
+export async function GET(req: Request) {
+  const sessionKey = new URL(req.url).searchParams.get("session") ?? "";
+  if (!SESSION_KEY_PATTERN.test(sessionKey)) {
+    return Response.json({ messages: [] });
+  }
+  if (isRateLimited(`ip:${clientIp(req)}`)) {
+    return Response.json({ messages: [] }, { status: 429 });
+  }
+  return Response.json({ messages: await loadConversation(sessionKey) });
 }
 
 export async function POST(req: Request) {
-  let body: { messages?: UIMessage[]; sessionKey?: string };
+  let body: { sessionKey?: unknown; text?: unknown };
   try {
     body = await req.json();
   } catch {
     return new Response("Solicitud inválida.", { status: 400 });
   }
 
-  const { messages, sessionKey } = body;
+  const { sessionKey, text } = body;
 
-  if (!sessionKey || !SESSION_KEY_PATTERN.test(sessionKey)) {
+  if (typeof sessionKey !== "string" || !SESSION_KEY_PATTERN.test(sessionKey)) {
     return new Response("Sesión inválida. Recarga la página, por favor.", {
       status: 400,
     });
   }
-  if (!Array.isArray(messages) || messages.length === 0) {
+  if (typeof text !== "string" || text.trim().length === 0) {
     return new Response("Escríbeme algo y con gusto te respondo.", {
       status: 400,
     });
   }
-  if (messages.length > MAX_MESSAGES) {
+  if (text.length > MAX_TEXT_LENGTH) {
     return new Response(
-      "Llevamos una conversación larga 😊. Para seguir, lo mejor es que Cristian te atienda en persona: déjame tu nombre y correo.",
+      "Tu mensaje es muy largo. ¿Me lo cuentas en pocas palabras?",
       { status: 400 },
     );
   }
 
-  let totalText = 0;
-  for (const message of messages) {
-    const length = messageText(message).length;
-    totalText += length;
-    if (length > MAX_TEXT_LENGTH || totalText > MAX_TOTAL_TEXT) {
-      return new Response(
-        "Tu mensaje es muy largo. ¿Me lo cuentas en pocas palabras?",
-        { status: 400 },
-      );
-    }
-  }
-
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip = clientIp(req);
   if (isRateLimited(`ip:${ip}`) || isRateLimited(`session:${sessionKey}`)) {
     return new Response(
       "Vas muy rápido 😅. Espera un momentico y vuelve a intentar.",
@@ -96,6 +96,23 @@ export async function POST(req: Request) {
     );
   }
 
+  const history = await loadConversation(sessionKey);
+  if (history.length >= MAX_MESSAGES) {
+    return new Response(
+      "Llevamos una conversación larga 😊. Para seguir, lo mejor es que Cristian te atienda en persona: déjame tu nombre y correo.",
+      { status: 400 },
+    );
+  }
+
+  // El mensaje del usuario se construye aquí: del navegador solo se acepta
+  // texto plano, nunca estructuras de mensaje.
+  const userMessage: UIMessage = {
+    id: newMessageId(),
+    role: "user",
+    parts: [{ type: "text", text: text.trim() }],
+  };
+  const messages = [...history, userMessage];
+
   const result = streamText({
     model: openai(process.env.OPENAI_MODEL ?? DEFAULT_MODEL),
     system,
@@ -113,6 +130,13 @@ export async function POST(req: Request) {
 
   return result.toUIMessageStreamResponse({
     originalMessages: messages,
+    generateMessageId: newMessageId,
+    // Sin esto, un fallo del modelo a mitad de stream muestra el default del
+    // SDK en inglés ("An error occurred.") dentro del chat.
+    onError: (error) => {
+      console.error("[chat] Error del modelo durante el stream:", error);
+      return "No pude responder en este momento 🙏. Espera un momentico y vuelve a intentarlo.";
+    },
     onFinish: async ({ messages: finalMessages }) => {
       await saveConversation(sessionKey, finalMessages);
     },
