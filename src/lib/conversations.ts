@@ -1,6 +1,8 @@
 import "server-only";
 import type { UIMessage } from "ai";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { messageText } from "@/lib/chat-content";
+import { calcularScore, detectarSospecha } from "@/lib/scoring";
 
 // El servidor es el único dueño del historial: lo lee y lo escribe en
 // Supabase y no acepta mensajes construidos por el navegador. Sin base de
@@ -49,13 +51,64 @@ export async function saveConversation(
   const supabase = getSupabaseAdmin();
   if (!supabase) return;
 
-  const { error } = await supabase.from("conversations").upsert(
-    {
-      session_key: sessionKey,
-      messages,
-      message_count: messages.length,
-    },
-    { onConflict: "session_key" },
-  );
-  if (error) console.error("[chat] Error guardando conversación:", error.message);
+  const { data: conversation, error } = await supabase
+    .from("conversations")
+    .upsert(
+      {
+        session_key: sessionKey,
+        messages,
+        message_count: messages.length,
+      },
+      { onConflict: "session_key" },
+    )
+    .select("id, suspicious_level")
+    .single();
+
+  if (error || !conversation) {
+    console.error("[chat] Error guardando conversación:", error?.message);
+    return;
+  }
+
+  // Detección anti-estafa sobre lo que escribió el visitante. Solo escala
+  // (nunca baja un nivel ya marcado) y jamás bloquea la conversación.
+  const textosVisitante = messages
+    .filter((m) => m.role === "user")
+    .map(messageText);
+  const sospecha = detectarSospecha(textosVisitante);
+  if (sospecha && sospecha.nivel > (conversation.suspicious_level ?? 0)) {
+    const { error: errorSospecha } = await supabase
+      .from("conversations")
+      .update({
+        suspicious_level: sospecha.nivel,
+        suspicious_reason: sospecha.motivo,
+      })
+      .eq("id", conversation.id);
+    if (errorSospecha) {
+      console.error("[chat] Error marcando sospecha:", errorSospecha.message);
+    }
+  }
+
+  // Si esta conversación ya tiene lead, su puntaje de interacción crece
+  // con la charla: se recalcula para que las alertas de Fase 4 sean fieles.
+  const { data: lead } = await supabase
+    .from("leads")
+    .select("id, budget, timeline, financing")
+    .eq("conversation_id", conversation.id)
+    .maybeSingle();
+
+  if (lead) {
+    const { score, category } = calcularScore({
+      budget: lead.budget,
+      timeline: lead.timeline,
+      financing: lead.financing,
+      messageCount: messages.length,
+    });
+    const { error: errorScore } = await supabase
+      .from("leads")
+      .update({ score, category })
+      .eq("id", lead.id);
+    if (errorScore) {
+      console.error("[chat] Error actualizando score:", errorScore.message);
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isRateLimited } from "@/lib/rate-limit";
 import { SESSION_KEY_PATTERN } from "@/lib/chat-content";
+import { calcularScore } from "@/lib/scoring";
 import {
   BUDGET_OPTIONS,
   TIMELINE_OPTIONS,
@@ -121,13 +122,20 @@ export async function POST(req: Request) {
   const { data: conversation, error: convError } = await supabase
     .from("conversations")
     .upsert({ session_key: sessionKey }, { onConflict: "session_key" })
-    .select("id")
+    .select("id, message_count")
     .single();
 
   if (convError || !conversation) {
     console.error("[lead] Error asegurando conversación:", convError?.message);
     return new Response(MAINTENANCE, { status: 503 });
   }
+
+  const { score, category } = calcularScore({
+    budget: cleanBudget,
+    timeline: cleanTimeline,
+    financing: cleanFinancing,
+    messageCount: conversation.message_count ?? 0,
+  });
 
   const { error: leadError } = await supabase.from("leads").upsert(
     {
@@ -139,6 +147,8 @@ export async function POST(req: Request) {
       timeline: cleanTimeline,
       financing: cleanFinancing,
       wants_contact: true,
+      score,
+      category,
     },
     { onConflict: "conversation_id" },
   );
