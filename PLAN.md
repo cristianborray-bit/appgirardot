@@ -33,15 +33,15 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 
 ---
 
-## FASE 0 — Infraestructura `[estado: ⬜ pendiente]`
+## FASE 0 — Infraestructura `[estado: 🔄 lista salvo deploy (paso de Cristian)]`
 
-- [ ] Crear proyecto Supabase `appgirardot` (us-east-1, costo $0 confirmado antes de crear)
-- [ ] Esquema: tablas `leads`, `conversations`, `email_log` — todas con RLS activado
-- [ ] App Next.js base (TypeScript + Tailwind) en el repo
-- [ ] Primer deploy a Vercel
+- [x] Crear proyecto Supabase `appgirardot` — creado: id `umqotxoixboqkgerlupy`, us-east-1, costo $0 confirmado
+- [x] Esquema: tablas `leads`, `conversations`, `email_log` — RLS activado, advisors de seguridad sin hallazgos
+- [x] App Next.js 16 base (TypeScript + Tailwind v4) — build limpio, verificada corriendo (HTTP 200)
+- [ ] Primer deploy a Vercel — **requiere paso de Cristian**: el sandbox no tiene credenciales de Vercel CLI y la red bloquea el login, así que el deploy llega por la integración GitHub↔Vercel (2 min, abajo)
 
 **Entregable:** URL viva con página base + tablas creadas
-**Nota:** conectar GitHub↔Vercel para auto-deploy es un paso de 2 min de Cristian en el dashboard (opcional; mientras tanto yo despliego desde la sesión)
+**Cómo conectar (Cristian, 2 min):** entrar a [vercel.com/new](https://vercel.com/new) → "Import Git Repository" → elegir `cristianborray-bit/appgirardot` → botón "Deploy" (Next.js se detecta solo, sin cambiar nada). Desde ahí, cada push mío se despliega automáticamente y yo monitoreo los deployments desde la sesión.
 
 ## FASE 1 — Chat MVP `[estado: ⬜ pendiente]`
 
@@ -105,7 +105,8 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 
 ## Pendientes de Cristian
 
-- [ ] **"Aprobado"** para arrancar Fase 0
+- [x] **"Aprobado"** para arrancar Fase 0 — dado el 2026-06-11
+- [ ] Conectar GitHub↔Vercel (2 min): [vercel.com/new](https://vercel.com/new) → Import `cristianborray-bit/appgirardot` → Deploy
 - [ ] `OPENAI_API_KEY` → para Fase 1 (se pega en Vercel, nunca en el chat ni en el repo)
 - [ ] Fotos + video del apto → para Fase 2
 - [ ] Cuenta en resend.com + API key → para Fase 4
