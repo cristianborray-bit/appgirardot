@@ -70,25 +70,25 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** flujo completo de usuario guardándose en Supabase
 **Requiere de Cristian:** subir fotos y video a su carpeta de Drive "videos y fotos apto girardot"
 
-## FASE 3 — Scoring + Panel `[estado: 🔄 código listo — falta verificación en vivo del panel por Cristian]`
+## FASE 3 — Scoring + Panel `[estado: ✅ completada — panel verificado por Cristian el 2026-06-12]`
 
 - [x] Scoring automático: presupuesto 40 + urgencia 30 + financiación 20 + interacción 10 — calculado al enviar el formulario y RECALCULADO con cada mensaje del chat (pesos ajustables en `src/lib/scoring.ts`)
 - [x] Clasificación: HOT (70-100) / WARM (40-69) / COLD (0-39)
 - [x] Detección anti-scam: patrones de timos inmobiliarios típicos (anticipos, pagos a distancia, comprar sin visitar, terceros, sobrepagos, datos bancarios) → marca `suspicious_level` 1-2 con motivo legible; solo escala, nunca bloquea
 - [x] Panel `/admin` con login de contraseña (cuenta creada para cristianborray@gmail.com, solo ese correo pasa): leads con semáforo 🔥🟡❄️ + 🚩, conversaciones completas, cambiar estado, notas — protegido con proxy + layout + re-chequeo en cada action (getClaims, patrón oficial @supabase/ssr)
-- [ ] Verificación en vivo del panel por Cristian (login + revisar un lead de prueba)
+- [x] Verificación en vivo del panel por Cristian (login + revisar un lead de prueba) — ✅ confirmado 2026-06-12
 
-**Entregable:** panel funcionando con leads de prueba
+**Entregable:** ✅ panel funcionando en [appgirardot.vercel.app/admin](https://appgirardot.vercel.app/admin)
 
-## FASE 4 — Emails automáticos `[estado: ⬜ pendiente]`
+## FASE 4 — Emails automáticos `[estado: 🔄 en curso]`
 
 - [ ] Notificación inmediata a Cristian para leads HOT (incluye revisión de seguridad del lead)
 - [ ] Emails de bienvenida por categoría (plantillas del plan V5.1)
 - [ ] Vercel Cron diario: seguimientos día 1/3/7 para WARM, registrados en `email_log`
-- [ ] El teléfono de Cristian se entrega SOLO vía servidor/email tras calificar HOT
+- [ ] El teléfono de Cristian se entrega SOLO vía servidor/email tras calificar HOT — número va en Vercel env var `CRISTIAN_PHONE`, nunca en código
 
 **Entregable:** registras un lead de prueba y llegan los emails correctos
-**Requiere de Cristian:** cuenta Resend + API key + dominio verificado
+**Requiere de Cristian:** RESEND_API_KEY en Vercel · CRISTIAN_PHONE en Vercel · dominio verificado para emails a leads (Fase 4B)
 
 ## FASE 5 — Endurecimiento + Dominio `[estado: ⬜ pendiente]`
 
