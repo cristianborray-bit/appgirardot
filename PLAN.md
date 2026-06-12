@@ -118,6 +118,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [x] Conectar GitHub↔Vercel — hecho: auto-deploy funcionando
 - [x] `OPENAI_API_KEY` + variables de Supabase en Vercel — hechas y verificadas en vivo
 - [ ] Fotos + video del apto → para Fase 2
-- [ ] Cuenta en resend.com + API key → para Fase 4
-- [ ] Dominio elegido y comprado → para Fase 5. Candidatos libres a $11.25/año: `aqualinagirardot.com` · `aptoaqualina.com` · `aptogirardot.com` · `ventaaptogirardot.com`
+- [x] Cuenta en resend.com + `RESEND_API_KEY` + `CRISTIAN_PHONE` en Vercel — hechas el 2026-06-12
+- [ ] `CRON_SECRET` en Vercel (valor generado y entregado por chat el 2026-06-12) → enciende el cron de seguimientos
+- [ ] Dominio elegido y comprado → cierra Fase 4 (emails a leads) y sirve para Fase 5. Candidatos libres a $11.25/año: `aqualinagirardot.com` · `aptoaqualina.com` · `aptogirardot.com` · `ventaaptogirardot.com`
 - [ ] Confirmar email de notificaciones: cristianborray@gmail.com
