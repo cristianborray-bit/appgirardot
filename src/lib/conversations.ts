@@ -3,6 +3,7 @@ import type { UIMessage } from "ai";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { messageText } from "@/lib/chat-content";
 import { calcularScore, detectarSospecha } from "@/lib/scoring";
+import { notificarSiCalentoAHot } from "@/lib/emails";
 
 // El servidor es el único dueño del historial: lo lee y lo escribe en
 // Supabase y no acepta mensajes construidos por el navegador. Sin base de
@@ -109,6 +110,10 @@ export async function saveConversation(
       .eq("id", lead.id);
     if (errorScore) {
       console.error("[chat] Error actualizando score:", errorScore.message);
+    } else if (category === "hot") {
+      // Si la charla lo calentó hasta HOT, Cristian se entera ya mismo
+      // (el candado de email_log evita alertas repetidas).
+      await notificarSiCalentoAHot(lead.id);
     }
   }
 }

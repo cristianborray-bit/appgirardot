@@ -1,7 +1,9 @@
+import { after } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isRateLimited } from "@/lib/rate-limit";
 import { SESSION_KEY_PATTERN } from "@/lib/chat-content";
 import { calcularScore } from "@/lib/scoring";
+import { notificarLeadNuevo } from "@/lib/emails";
 import {
   BUDGET_OPTIONS,
   TIMELINE_OPTIONS,
@@ -137,26 +139,34 @@ export async function POST(req: Request) {
     messageCount: conversation.message_count ?? 0,
   });
 
-  const { error: leadError } = await supabase.from("leads").upsert(
-    {
-      conversation_id: conversation.id,
-      name: cleanName,
-      email: cleanEmail,
-      phone: cleanPhone || null,
-      budget: cleanBudget,
-      timeline: cleanTimeline,
-      financing: cleanFinancing,
-      wants_contact: true,
-      score,
-      category,
-    },
-    { onConflict: "conversation_id" },
-  );
+  const { data: lead, error: leadError } = await supabase
+    .from("leads")
+    .upsert(
+      {
+        conversation_id: conversation.id,
+        name: cleanName,
+        email: cleanEmail,
+        phone: cleanPhone || null,
+        budget: cleanBudget,
+        timeline: cleanTimeline,
+        financing: cleanFinancing,
+        wants_contact: true,
+        score,
+        category,
+      },
+      { onConflict: "conversation_id" },
+    )
+    .select("id")
+    .single();
 
-  if (leadError) {
-    console.error("[lead] Error guardando lead:", leadError.message);
+  if (leadError || !lead) {
+    console.error("[lead] Error guardando lead:", leadError?.message);
     return new Response(MAINTENANCE, { status: 503 });
   }
+
+  // Los emails (alerta HOT a Cristian + bienvenida) salen DESPUÉS de
+  // responder: el visitante ve su confirmación al instante.
+  after(() => notificarLeadNuevo(lead.id));
 
   return Response.json({ ok: true });
 }

@@ -80,15 +80,18 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 
 **Entregable:** ✅ panel funcionando en [appgirardot.vercel.app/admin](https://appgirardot.vercel.app/admin)
 
-## FASE 4 — Emails automáticos `[estado: 🔄 en curso]`
+## FASE 4 — Emails automáticos `[estado: 🔄 código completo — falta CRON_SECRET y dominio para encender emails a leads]`
 
-- [ ] Notificación inmediata a Cristian para leads HOT (incluye revisión de seguridad del lead)
-- [ ] Emails de bienvenida por categoría (plantillas del plan V5.1)
-- [ ] Vercel Cron diario: seguimientos día 1/3/7 para WARM, registrados en `email_log`
-- [ ] El teléfono de Cristian se entrega SOLO vía servidor/email tras calificar HOT — número va en Vercel env var `CRISTIAN_PHONE`, nunca en código
+- [x] Notificación inmediata a Cristian para leads HOT con 🚩 señales de alerta y link a la ficha — funciona desde ya (el remitente de prueba de Resend solo puede escribirle al dueño de la cuenta: justo lo que necesita la alerta)
+- [x] Emails de bienvenida por categoría (el HOT incluye el teléfono de Cristian y marca `phone_revealed`) — código listo; se encienden SOLOS al poner `EMAIL_FROM` con el dominio verificado
+- [x] Vercel Cron diario (8:00 am Bogotá): seguimientos día 1/3/7 para WARM aún sin contactar + reintento de emails fallidos o colgados — todo en `email_log` con candado único lead+tipo (imposible enviar dos veces el mismo email)
+- [x] El teléfono de Cristian se entrega SOLO vía servidor/email tras calificar HOT — vive en la env var `CRISTIAN_PHONE`, jamás en código ni en el prompt
+- [x] Revisión de código con autocrítica: corregida inyección de HTML en emails (datos del visitante ahora se escapan siempre)
+- [ ] `CRON_SECRET` en Vercel (paso de Cristian: secreto generado y entregado por chat)
+- [ ] Dominio comprado + verificado en Resend → enciende bienvenidas y seguimientos (cierre real de la fase)
 
 **Entregable:** registras un lead de prueba y llegan los emails correctos
-**Requiere de Cristian:** RESEND_API_KEY en Vercel · CRISTIAN_PHONE en Vercel · dominio verificado para emails a leads (Fase 4B)
+**Requiere de Cristian:** ~~RESEND_API_KEY + CRISTIAN_PHONE~~ ✅ hechas · falta `CRON_SECRET` · dominio verificado para emails a leads
 
 ## FASE 5 — Endurecimiento + Dominio `[estado: ⬜ pendiente]`
 
