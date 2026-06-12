@@ -27,6 +27,24 @@ export type BudgetValue = (typeof BUDGET_OPTIONS)[number]["value"];
 export type TimelineValue = (typeof TIMELINE_OPTIONS)[number]["value"];
 export type FinancingValue = (typeof FINANCING_OPTIONS)[number]["value"];
 
+// Estados del lead en el embudo de Cristian (mismos valores del check
+// constraint de la tabla `leads`).
+export const ESTADO_OPTIONS = [
+  { value: "new", label: "Nuevo" },
+  { value: "contacted", label: "Contactado" },
+  { value: "visited", label: "Visitó" },
+  { value: "offer", label: "Oferta" },
+  { value: "lost", label: "Perdido" },
+] as const;
+
+export function labelDe(
+  options: readonly { value: string; label: string }[],
+  value: string | null | undefined,
+): string {
+  if (!value) return "—";
+  return options.find((o) => o.value === value)?.label ?? value;
+}
+
 export const MAX_NAME_LENGTH = 80;
 export const MAX_EMAIL_LENGTH = 120;
 export const MAX_PHONE_LENGTH = 20;

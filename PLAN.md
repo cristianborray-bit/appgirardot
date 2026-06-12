@@ -70,12 +70,13 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** flujo completo de usuario guardándose en Supabase
 **Requiere de Cristian:** subir fotos y video a su carpeta de Drive "videos y fotos apto girardot"
 
-## FASE 3 — Scoring + Panel `[estado: ⬜ pendiente]`
+## FASE 3 — Scoring + Panel `[estado: 🔄 código listo — falta verificación en vivo del panel por Cristian]`
 
-- [ ] Scoring automático: presupuesto 40 + urgencia 30 + financiación 20 + interacción 10
-- [ ] Clasificación: HOT (70-100) / WARM (40-69) / COLD (0-39)
-- [ ] Detección anti-scam con `suspicious_flags` y respuestas estándar de seguridad
-- [ ] Panel `/admin` con login: leads con semáforo, conversaciones completas, cambiar estado, notas
+- [x] Scoring automático: presupuesto 40 + urgencia 30 + financiación 20 + interacción 10 — calculado al enviar el formulario y RECALCULADO con cada mensaje del chat (pesos ajustables en `src/lib/scoring.ts`)
+- [x] Clasificación: HOT (70-100) / WARM (40-69) / COLD (0-39)
+- [x] Detección anti-scam: patrones de timos inmobiliarios típicos (anticipos, pagos a distancia, comprar sin visitar, terceros, sobrepagos, datos bancarios) → marca `suspicious_level` 1-2 con motivo legible; solo escala, nunca bloquea
+- [x] Panel `/admin` con login de contraseña (cuenta creada para cristianborray@gmail.com, solo ese correo pasa): leads con semáforo 🔥🟡❄️ + 🚩, conversaciones completas, cambiar estado, notas — protegido con proxy + layout + re-chequeo en cada action (getClaims, patrón oficial @supabase/ssr)
+- [ ] Verificación en vivo del panel por Cristian (login + revisar un lead de prueba)
 
 **Entregable:** panel funcionando con leads de prueba
 
