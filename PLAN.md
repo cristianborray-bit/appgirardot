@@ -93,15 +93,25 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** ✅ emails funcionando — alertas HOT a Cristian + bienvenidas + seguimientos d1/3/7 desde `hola@aqualinagirardot.company`
 **Requiere de Cristian:** ~~RESEND_API_KEY + CRISTIAN_PHONE~~ ✅ · ~~CRON_SECRET~~ ✅ · ~~dominio verificado~~ ✅ — todo completo
 
-## FASE 5 — Endurecimiento + Dominio `[estado: ⬜ pendiente]`
+## FASE 5 — Endurecimiento + Dominio `[estado: 🔄 en curso — auditoría aplicada, pruebas de prompt pendientes]`
 
-- [ ] Dominio conectado en Vercel y verificado en Resend
-- [ ] Auditoría completa con skill `security-review`
+- [x] Dominio `aqualinagirardot.company` conectado en Vercel y verificado en Resend — 2026-06-16
+- [x] Auditoría completa de seguridad (14 hallazgos: 2 críticos, 4 altos, 4 medios, 4 bajos)
+- [x] Correcciones aplicadas (2026-06-16):
+  - C-1: proxy bloquea ahora usuarios autenticados no-admin (bypass corregido)
+  - C-2: security headers en todas las rutas (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
+  - A-3: CRISTIAN_PHONE escapado en HTML de email (previene inyección)
+  - A-4: saltos de línea eliminados del subject del email (previene header injection)
+  - M-3: validación de leadId en server actions del panel
+  - M-4: override de PostCSS ≥8.5.10 (CVE transitivo)
+  - B-4: honeypot mejorado con CSS posicional (más difícil de detectar por bots)
 - [ ] Pruebas de extracción de prompt (intentar sacarle al bot info que no debe dar)
-- [ ] Pruebas anti-scam end-to-end + revisión final de RLS y rate limiting
+- [ ] Pruebas anti-scam end-to-end
+- [ ] Hallazgo A-2 pendiente: rate limit en login requiere migrar auth a server action (para Fase 6)
+- [ ] Hallazgo A-1 pendiente: rate limiter persistente entre instancias requiere Vercel KV (para Fase 6)
 
 **Entregable:** app lista para recibir pauta
-**Requiere de Cristian:** comprar el dominio (~$11.25 USD/año desde su cuenta Vercel)
+**Requiere de Cristian:** OK para proceder con las pruebas de prompt y anti-scam
 
 ## FASE 6 — Lanzamiento + Iteración `[estado: ⬜ pendiente]`
 

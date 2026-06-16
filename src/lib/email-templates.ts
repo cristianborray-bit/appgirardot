@@ -68,7 +68,7 @@ export function plantillaAlertaHot(
       ? `<p style="padding:12px 16px;background:#fdf3e7;border:1px solid #e8b27d;border-radius:12px;">🚩 <strong>Señales de alerta:</strong> ${escapar(lead.suspiciousReason ?? "revisar la conversación con cuidado")}</p>`
       : "";
   return {
-    subject: `🔥 Lead caliente: ${lead.name} — ${lead.score} puntos`,
+    subject: `🔥 Lead caliente: ${lead.name.replace(/[\r\n\t]/g, " ")} — ${lead.score} puntos`,
     html: envoltura(
       `<h1 style="font-size:22px;margin:0 0 16px;">🔥 Nuevo interesado caliente</h1>
 <p style="font-size:18px;margin:0 0 4px;"><strong>${escapar(lead.name)}</strong></p>
@@ -95,7 +95,7 @@ export function plantillaBienvenidaHot(
   telefonoCristian: string | undefined,
 ): Plantilla {
   const lineaTelefono = telefonoCristian
-    ? `<p>¿Prefieres no esperar? Escríbele directo por WhatsApp: <strong>${telefonoCristian}</strong></p>`
+    ? `<p>¿Prefieres no esperar? Escríbele directo por WhatsApp: <strong>${escapar(telefonoCristian)}</strong></p>`
     : "";
   return {
     subject: `¡Gracias, ${primerNombre(lead.name)}! Hablemos del apartamento en Aqualina Orange 🍊`,

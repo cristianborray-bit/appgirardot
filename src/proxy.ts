@@ -44,6 +44,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // C-1: usuario con sesión activa pero que NO es el admin → fuera.
+  // Sin esto, cualquier cuenta de Supabase podría llegar a /admin y
+  // depender únicamente del layout/actions como barrera (no es suficiente).
+  if (claims && !esAdmin && !enLogin) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/login";
+    return NextResponse.redirect(url);
+  }
+
   if (esAdmin && enLogin) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";

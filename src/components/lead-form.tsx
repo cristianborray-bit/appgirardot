@@ -220,8 +220,13 @@ export function CapturaLead({
         </div>
       </div>
 
-      {/* Campo trampa para bots: las personas no lo ven ni lo llenan. */}
-      <div className="hidden" aria-hidden="true">
+      {/* Campo trampa para bots: las personas no lo ven ni lo llenan.
+          CSS posicional (no display:none) para que bots avanzados no lo detecten. */}
+      <div
+        className="absolute overflow-hidden opacity-0 pointer-events-none"
+        style={{ top: "-9999px", left: "-9999px", height: 0, width: 0 }}
+        aria-hidden="true"
+      >
         <label htmlFor="lead-sitio-web">Sitio web</label>
         <input
           id="lead-sitio-web"

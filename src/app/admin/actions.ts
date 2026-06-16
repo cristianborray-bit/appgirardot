@@ -17,6 +17,7 @@ async function requireAdmin() {
 
 export async function cambiarEstado(leadId: number, estado: string) {
   await requireAdmin();
+  if (!Number.isInteger(leadId) || leadId <= 0) return;
   if (!ESTADO_OPTIONS.some((o) => o.value === estado)) return;
 
   const supabase = getSupabaseAdmin();
@@ -34,6 +35,7 @@ export async function cambiarEstado(leadId: number, estado: string) {
 
 export async function guardarNotas(leadId: number, formData: FormData) {
   await requireAdmin();
+  if (!Number.isInteger(leadId) || leadId <= 0) return;
 
   const notas = String(formData.get("notas") ?? "").slice(0, 4000);
   const supabase = getSupabaseAdmin();
