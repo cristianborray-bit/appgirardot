@@ -47,7 +47,7 @@ export function Galeria() {
       )}
 
       {VIDEO_ID && (
-        <div className="relative mt-6 aspect-video overflow-hidden rounded-2xl border border-agua-borde bg-magdalena">
+        <div className="relative mt-6 mx-auto aspect-[9/16] w-full max-w-sm overflow-hidden rounded-2xl border border-agua-borde bg-magdalena">
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`}
             title="Video tour del apartamento"
