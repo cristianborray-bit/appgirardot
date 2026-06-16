@@ -1,5 +1,10 @@
 {
   "_como_usar": "Galería y video del apartamento (editable por Cristian). Las fotos se suben al bucket 'galeria' de Supabase Storage y aquí solo se listan con su nombre de archivo y un título corto. 'video_youtube_id' es el código del video de YouTube (lo que va después de watch?v= en el link, funciona con videos ocultos/unlisted). Mientras estas listas estén vacías, las secciones de galería y video NO aparecen en la página. Los cambios se aplican al hacer commit + deploy.",
   "video_youtube_id": "",
-  "fotos": []
+  "fotos": [
+    { "archivo": "img_0649.jpg", "titulo": "Cocina integral amplia y luminosa" },
+    { "archivo": "535201646.jpg", "titulo": "Sala-comedor, ambiente social abierto" },
+    { "archivo": "540123359.jpg", "titulo": "Vista desde el balcón en el piso 10" },
+    { "archivo": "535201639.jpg", "titulo": "Piscina del conjunto al atardecer" }
+  ]
 }
