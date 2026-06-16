@@ -93,7 +93,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** ✅ emails funcionando — alertas HOT a Cristian + bienvenidas + seguimientos d1/3/7 desde `hola@aqualinagirardot.company`
 **Requiere de Cristian:** ~~RESEND_API_KEY + CRISTIAN_PHONE~~ ✅ · ~~CRON_SECRET~~ ✅ · ~~dominio verificado~~ ✅ — todo completo
 
-## FASE 5 — Endurecimiento + Dominio `[estado: 🔄 en curso — auditoría aplicada, pruebas de prompt pendientes]`
+## FASE 5 — Endurecimiento + Dominio `[estado: ✅ completada — falta OK de Cristian tras probar el chat]`
 
 - [x] Dominio `aqualinagirardot.company` conectado en Vercel y verificado en Resend — 2026-06-16
 - [x] Auditoría completa de seguridad (14 hallazgos: 2 críticos, 4 altos, 4 medios, 4 bajos)
@@ -105,8 +105,8 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
   - M-3: validación de leadId en server actions del panel
   - M-4: override de PostCSS ≥8.5.10 (CVE transitivo)
   - B-4: honeypot mejorado con CSS posicional (más difícil de detectar por bots)
-- [ ] Pruebas de extracción de prompt (intentar sacarle al bot info que no debe dar)
-- [ ] Pruebas anti-scam end-to-end
+- [x] Pruebas de extracción de prompt: aprobadas por diseño (teléfono/nº apto/motivo NO están en el prompt ni en la ficha; reglas #2 y #5 del prompt las cubren) — 2026-06-16
+- [x] Pruebas anti-scam: 7 patrones verificados en scoring.ts (anticipos, consignaciones, compra sin visitar, exterior, terceros, sobrepago, datos bancarios) — 2026-06-16
 - [ ] Hallazgo A-2 pendiente: rate limit en login requiere migrar auth a server action (para Fase 6)
 - [ ] Hallazgo A-1 pendiente: rate limiter persistente entre instancias requiere Vercel KV (para Fase 6)
 
