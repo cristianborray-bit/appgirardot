@@ -2,9 +2,18 @@
   "_como_usar": "Galería y video del apartamento (editable por Cristian). Las fotos se suben al bucket 'galeria' de Supabase Storage y aquí solo se listan con su nombre de archivo y un título corto. 'video_youtube_id' es el código del video de YouTube (lo que va después de watch?v= en el link, funciona con videos ocultos/unlisted). Mientras estas listas estén vacías, las secciones de galería y video NO aparecen en la página. Los cambios se aplican al hacer commit + deploy.",
   "video_youtube_id": "",
   "fotos": [
-    { "archivo": "img_0649.jpg", "titulo": "Cocina integral amplia y luminosa" },
-    { "archivo": "535201646.jpg", "titulo": "Sala-comedor, ambiente social abierto" },
-    { "archivo": "540123359.jpg", "titulo": "Vista desde el balcón en el piso 10" },
-    { "archivo": "535201639.jpg", "titulo": "Piscina del conjunto al atardecer" }
+    { "archivo": "img_0649.jpg",    "titulo": "Cocina integral amplia y luminosa" },
+    { "archivo": "IMG_0648.JPG",    "titulo": "Comedor con barra de granito y lámpara artesanal" },
+    { "archivo": "535201646.jpg",   "titulo": "Sala-comedor, ambiente social abierto" },
+    { "archivo": "535973856.jpg",   "titulo": "Sala con acceso directo al balcón" },
+    { "archivo": "IMG_0650.JPG",    "titulo": "Comedor con ventanas de piso a techo" },
+    { "archivo": "IMG_0656.JPG",    "titulo": "Habitación con closet empotrado amplio" },
+    { "archivo": "IMG_0657.JPG",    "titulo": "Habitación principal con ventilador de techo" },
+    { "archivo": "IMG_0659.JPG",    "titulo": "Baño completo con espejo y mosaico decorativo" },
+    { "archivo": "IMG_0667.JPG",    "titulo": "Baño con encimera de granito" },
+    { "archivo": "535973741.jpg",   "titulo": "Balcón amoblado con vista a las montañas" },
+    { "archivo": "540123359.jpg",   "titulo": "Vista panorámica desde el piso 10" },
+    { "archivo": "535201660.jpg",   "titulo": "Conjunto Aqualina Orange desde el balcón" },
+    { "archivo": "535201639.jpg",   "titulo": "Piscina del conjunto al atardecer" }
   ]
 }
