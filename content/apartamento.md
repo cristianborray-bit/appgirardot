@@ -44,7 +44,7 @@
 
 ## Zonas comunes del conjunto
 
-- 3 piscinas (adultos y niños)
+- 6 piscinas (4 de adultos y 2 de niños, todas muy grandes y cómodas)
 - 4 zonas de BBQ
 - Gimnasio
 - Salón de juegos (billar, ping pong, futbolín)
@@ -54,7 +54,7 @@
 - Zonas verdes
 - Supermercado interno (9 am – 8 pm)
 - Vigilancia privada 24 horas
-- Parqueaderos para visitantes
+- Parqueaderos para visitantes en abundancia (nunca falta dónde parquear)
 - Velódromo justo al lado del conjunto
 
 ## Puntos fuertes para compradores
