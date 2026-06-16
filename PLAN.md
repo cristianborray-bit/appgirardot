@@ -93,7 +93,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** ✅ emails funcionando — alertas HOT a Cristian + bienvenidas + seguimientos d1/3/7 desde `hola@aqualinagirardot.company`
 **Requiere de Cristian:** ~~RESEND_API_KEY + CRISTIAN_PHONE~~ ✅ · ~~CRON_SECRET~~ ✅ · ~~dominio verificado~~ ✅ — todo completo
 
-## FASE 5 — Endurecimiento + Dominio `[estado: ✅ completada — falta OK de Cristian tras probar el chat]`
+## FASE 5 — Endurecimiento + Dominio `[estado: ✅ completada — verificado por Cristian el 2026-06-16]`
 
 - [x] Dominio `aqualinagirardot.company` conectado en Vercel y verificado en Resend — 2026-06-16
 - [x] Auditoría completa de seguridad (14 hallazgos: 2 críticos, 4 altos, 4 medios, 4 bajos)
@@ -110,12 +110,13 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [ ] Hallazgo A-2 pendiente: rate limit en login requiere migrar auth a server action (para Fase 6)
 - [ ] Hallazgo A-1 pendiente: rate limiter persistente entre instancias requiere Vercel KV (para Fase 6)
 
-**Entregable:** app lista para recibir pauta
-**Requiere de Cristian:** OK para proceder con las pruebas de prompt y anti-scam
+**Entregable:** ✅ app lista para recibir pauta — verificada y endurecida
+**Requiere de Cristian:** ~~OK para proceder con las pruebas~~ ✅ dado el 2026-06-16
 
-## FASE 6 — Lanzamiento + Iteración `[estado: ⬜ pendiente]`
+## FASE 6 — Lanzamiento + Iteración `[estado: 🔄 en curso]`
 
 - [ ] Textos para anuncios (Facebook, Instagram, OLX) apuntando al link
+- [ ] Limpiar leads de prueba del panel antes de lanzar
 - [ ] Revisión periódica de conversaciones reales → mejoras al prompt y a la ficha
 
 **Entregable:** pauta activa, leads entrando solos
