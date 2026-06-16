@@ -12,7 +12,7 @@ const VIDEO_ID = galeria.video_youtube_id;
 
 function fotoUrl(archivo: string): string {
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  return `${base}/storage/v1/object/public/galeria/${archivo}`;
+  return `${base}/storage/v1/object/public/galeria/${encodeURIComponent(archivo)}`;
 }
 
 export function Galeria() {
@@ -29,7 +29,7 @@ export function Galeria() {
 
       {FOTOS.length > 0 && (
         <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {FOTOS.map(({ archivo, titulo }) => (
+          {FOTOS.map(({ archivo, titulo }, i) => (
             <li
               key={archivo}
               className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-agua-borde bg-agua"
@@ -39,6 +39,7 @@ export function Galeria() {
                 alt={titulo}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={i === 0}
                 className="object-cover"
               />
             </li>
