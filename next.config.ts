@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/galeria/**",
       },
     ],
+    // 75 para miniaturas del mosaico; 90 para la foto grande del lightbox.
+    qualities: [75, 90],
   },
   async headers() {
     return [

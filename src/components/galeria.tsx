@@ -238,17 +238,19 @@ export function Galeria() {
 
           <div
             onClick={(e) => e.stopPropagation()}
-            className="flex max-h-full max-w-full flex-col items-center"
+            className="flex flex-col items-center gap-3"
           >
-            <Image
-              src={fotoUrl(fotoAbierta.archivo)}
-              alt={fotoAbierta.titulo}
-              width={1200}
-              height={1600}
-              sizes="90vw"
-              className="h-auto max-h-[78vh] w-auto max-w-[90vw] rounded-xl object-contain"
-            />
-            <p className="mt-3 text-center text-white">
+            <div className="relative h-[78vh] w-[90vw]">
+              <Image
+                src={fotoUrl(fotoAbierta.archivo)}
+                alt={fotoAbierta.titulo}
+                fill
+                sizes="90vw"
+                quality={90}
+                className="rounded-xl object-contain"
+              />
+            </div>
+            <p className="text-center text-white">
               {fotoAbierta.titulo}
               <span className="ml-2 text-white/60">
                 {abierta + 1} / {FOTOS.length}
