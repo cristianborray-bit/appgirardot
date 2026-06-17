@@ -121,6 +121,8 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [ ] Textos para anuncios (Facebook, Instagram, OLX) apuntando al link
 - [ ] Limpiar leads de prueba del panel antes de lanzar
 - [ ] Revisión periódica de conversaciones reales → mejoras al prompt y a la ficha
+- [x] **Fix de recuperación de contraseña del panel admin reportada por Cristian (2026-06-17):** al pedir "Send password recovery" desde el dashboard de Supabase, el link lo mandaba a `localhost:3000` con un error técnico. Dos causas distintas: (1) el Site URL de Supabase Auth está mal configurado (apunta a `localhost:3000` en vez del dominio real — ajuste pendiente de Cristian, ver abajo); (2) aunque el link funcionara, `/admin/login` no tenía ningún formulario para completar la recuperación. Se agrega ese formulario: si el link es válido, Supabase avisa al navegador (evento `PASSWORD_RECOVERY`) y se muestra "Pon tu contraseña nueva"; si ya venció o se usó, se muestra un aviso claro en español en vez del error técnico
+- [ ] **Pendiente de Cristian:** en el dashboard de Supabase → Authentication → URL Configuration, cambiar el Site URL de `localhost:3000` a `https://aqualinagirardot.company` (y agregar esa misma URL con `/**` a Redirect URLs). Sin eso, el link de recuperación sigue llevando a `localhost:3000` sin importar el fix de código. Después de cambiarlo, pedir un link nuevo desde el dashboard (el anterior ya quedó vencido) y abrirlo apenas llegue
 
 **Entregable:** pauta activa, leads entrando solos
 
