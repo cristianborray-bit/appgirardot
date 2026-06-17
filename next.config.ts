@@ -21,10 +21,6 @@ const nextConfig: NextConfig = {
   // archivos de Vercel podría dejarla fuera del bundle serverless.
   outputFileTracingIncludes: {
     "/api/chat": ["./content/**"],
-    // sharp carga sus binarios nativos (@img/sharp-*) con requires que el
-    // trazador estático no siempre detecta; sin esto el bundle serverless
-    // se queda sin el binario y la función truena en runtime (no en build).
-    "/api/admin/comprimir-galeria": ["./node_modules/@img/**/*"],
   },
   // Fotos de la galería: bucket público `galeria` en Supabase Storage.
   images: {
