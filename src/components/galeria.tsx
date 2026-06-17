@@ -265,7 +265,7 @@ export function Galeria() {
             type="button"
             onClick={cerrar}
             aria-label="Cerrar"
-            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full text-white hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <CerrarIcono />
           </button>
@@ -277,7 +277,7 @@ export function Galeria() {
               anterior();
             }}
             aria-label="Foto anterior"
-            className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-white hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:left-4"
+            className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <FlechaIcono direccion="izquierda" />
           </button>
@@ -318,7 +318,7 @@ export function Galeria() {
               siguiente();
             }}
             aria-label="Foto siguiente"
-            className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-white hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:right-4"
+            className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <FlechaIcono direccion="derecha" />
           </button>
