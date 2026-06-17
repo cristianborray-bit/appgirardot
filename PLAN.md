@@ -58,17 +58,16 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** ✅ [appgirardot.vercel.app](https://appgirardot.vercel.app) — chat respondiendo en producción
 **Nota:** las variables de entorno de Vercel solo aplican a deployments nuevos; si se cambian, hay que redesplegar (un push basta)
 
-## FASE 2 — Experiencia + Leads `[estado: 🔄 en curso — leads vivos; galería/video esperando material]`
+## FASE 2 — Experiencia + Leads `[estado: 🔄 en curso — leads vivos; galería y video publicados, falta OG con foto real]`
 
 - [x] Flujo de calificación con botones: presupuesto, timeline, financiación (valores espejo de los check constraints de la tabla `leads`; los tres grupos opcionales, con des-selección)
 - [x] Captura de lead (nombre + email obligatorios, teléfono opcional ≥7 dígitos) ligada a su conversación — reenviar el formulario actualiza el lead (índice único por conversación), campo trampa anti-bots, rate limit propio
 - [x] Infraestructura de galería + video lista y "auto-encendible": bucket público `galeria` en Storage, manifiesto editable `content/galeria.json`, grid de fotos (next/image) y embed YouTube-nocookie que aparecen solos al llenar el manifiesto. La carpeta de Drive de Cristian ("videos y fotos apto girardot") ya está visible para la sesión; cuando suba el material, se ingiere a Storage y se llena el manifiesto
 - [x] **Rediseño móvil pedido por Cristian (2026-06-11):** chat a pantalla completa estilo WhatsApp en celular (tarjeta de invitación + botón flotante 💬; la página de atrás se congela, un solo scroll, "← Volver"), y la captura de datos se integró DENTRO del chat como burbuja (botón "📝 Que Cristian me contacte" siempre visible; tras enviar queda "✓ Cristian te contactará pronto"). El formulario del final de la página se eliminó: un solo camino sin fricción. En computador todo sigue incrustado como antes
-- [ ] Fotos + video reales publicados (bloqueado por material de Cristian)
+- [x] **Rediseño de galería pedido por Cristian (2026-06-17):** mosaico de fotos con tamaños variados, foto destacada + video integrados como una pieza más, click para ampliar con navegación anterior/siguiente. Se incorporan 7 fotos nuevas subidas por Cristian (20 en total) y se corrige el tamaño/calidad de la foto ampliada (patrón `fill` + `object-contain` de Next.js, calidad 90)
 - [ ] OG tags con foto real: vista previa atractiva al compartir por WhatsApp/Facebook (los OG de texto existen desde Fase 1; la imagen entra con la primera foto)
 
 **Entregable:** flujo completo de usuario guardándose en Supabase
-**Requiere de Cristian:** subir fotos y video a su carpeta de Drive "videos y fotos apto girardot"
 
 ## FASE 3 — Scoring + Panel `[estado: ✅ completada — panel verificado por Cristian el 2026-06-12]`
 
@@ -128,7 +127,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [x] **"Aprobado"** para arrancar Fase 0 — dado el 2026-06-11
 - [x] Conectar GitHub↔Vercel — hecho: auto-deploy funcionando
 - [x] `OPENAI_API_KEY` + variables de Supabase en Vercel — hechas y verificadas en vivo
-- [ ] Fotos + video del apto → para Fase 2
+- [x] Fotos + video del apto → para Fase 2
 - [x] Cuenta en resend.com + `RESEND_API_KEY` + `CRISTIAN_PHONE` en Vercel — hechas el 2026-06-12
 - [ ] `CRON_SECRET` en Vercel (valor generado y entregado por chat el 2026-06-12) → enciende el cron de seguimientos
 - [ ] Dominio elegido y comprado → cierra Fase 4 (emails a leads) y sirve para Fase 5. Candidatos libres a $11.25/año: `aqualinagirardot.com` · `aptoaqualina.com` · `aptogirardot.com` · `ventaaptogirardot.com`
