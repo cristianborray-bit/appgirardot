@@ -277,7 +277,7 @@ export function Galeria() {
               anterior();
             }}
             aria-label="Foto anterior"
-            className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute left-6 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <FlechaIcono direccion="izquierda" />
           </button>
@@ -286,7 +286,7 @@ export function Galeria() {
             onClick={(e) => e.stopPropagation()}
             className="flex flex-col items-center gap-3"
           >
-            <div className="relative h-[78vh] w-[90vw]">
+            <div className="relative h-[78dvh] w-[90vw]">
               {errorGrande === abierta ? (
                 <div className="flex h-full w-full items-center justify-center rounded-xl bg-white/10 text-center text-white">
                   No se pudo cargar esta foto.
@@ -318,7 +318,7 @@ export function Galeria() {
               siguiente();
             }}
             aria-label="Foto siguiente"
-            className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute right-6 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <FlechaIcono direccion="derecha" />
           </button>
