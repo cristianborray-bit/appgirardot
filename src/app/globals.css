@@ -59,3 +59,22 @@ a {
     opacity: 0.6;
   }
 }
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lightbox-fondo {
+  animation: aparecer 0.15s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-fondo {
+    animation: none;
+  }
+}

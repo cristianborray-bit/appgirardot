@@ -1,7 +1,8 @@
 {
-  "_como_usar": "Galería y video del apartamento (editable por Cristian). Las fotos se suben al bucket 'galeria' de Supabase Storage y aquí solo se listan con su nombre de archivo y un título corto. 'video_youtube_id' es el código del video de YouTube (lo que va después de watch?v= en el link, funciona con videos ocultos/unlisted). Mientras estas listas estén vacías, las secciones de galería y video NO aparecen en la página. Los cambios se aplican al hacer commit + deploy.",
+  "_como_usar": "Galería y video del apartamento (editable por Cristian). Las fotos se suben al bucket 'galeria' de Supabase Storage y aquí solo se listan con su nombre de archivo y un título corto. La PRIMERA foto de la lista se muestra más grande (destacada), las demás van en un mosaico de tamaños variados. 'video_youtube_id' es el código del video de YouTube (lo que va después de watch?v= en el link, funciona con videos ocultos/unlisted). Mientras estas listas estén vacías, las secciones de galería y video NO aparecen en la página. Los cambios se aplican al hacer commit + deploy.",
   "video_youtube_id": "4ZNYD6VDJIM",
   "fotos": [
+    { "archivo": "subir2.jpg",      "titulo": "Piscina principal con reflejo de las montañas" },
     { "archivo": "img_0649.jpg",    "titulo": "Cocina integral amplia y luminosa" },
     { "archivo": "IMG_0648.JPG",    "titulo": "Comedor con barra de granito y lámpara artesanal" },
     { "archivo": "535201646.jpg",   "titulo": "Sala-comedor, ambiente social abierto" },
@@ -14,6 +15,12 @@
     { "archivo": "535973741.jpg",   "titulo": "Balcón amoblado con vista a las montañas" },
     { "archivo": "540123359.jpg",   "titulo": "Vista panorámica desde el piso 10" },
     { "archivo": "535201660.jpg",   "titulo": "Conjunto Aqualina Orange desde el balcón" },
-    { "archivo": "535201639.jpg",   "titulo": "Piscina del conjunto al atardecer" }
+    { "archivo": "535201639.jpg",   "titulo": "Piscina del conjunto al atardecer" },
+    { "archivo": "332951855.jpg",   "titulo": "Vista aérea de Aqualina Orange y Girardot" },
+    { "archivo": "332951872.jpg",   "titulo": "Piscina con camas solares y fuente decorativa" },
+    { "archivo": "287596848.jpg",   "titulo": "Una de las zonas de BBQ del conjunto" },
+    { "archivo": "332951895.jpg",   "titulo": "Parque infantil colorido del conjunto" },
+    { "archivo": "535201578.jpg",   "titulo": "Cocina integral, ambiente nocturno" },
+    { "archivo": "768599960.jpg",   "titulo": "Habitación secundaria con persiana decorativa" }
   ]
 }
