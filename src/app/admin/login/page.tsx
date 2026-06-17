@@ -15,7 +15,15 @@ export default function LoginAdmin() {
       : null,
   );
   const [enviando, setEnviando] = useState(false);
-  const [modoRecuperacion, setModoRecuperacion] = useState(false);
+  // Si el link es válido, Supabase agrega #...&type=recovery a la URL. Lo
+  // leemos aquí (no solo en el evento PASSWORD_RECOVERY) porque ese evento se
+  // dispara después de una llamada de red y puede tardar o perderse; leer la
+  // URL es instantáneo y siempre funciona.
+  const [modoRecuperacion, setModoRecuperacion] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.location.hash.includes("type=recovery"),
+  );
 
   // Al volver de un link de "recuperar contraseña" válido, Supabase dispara
   // el evento PASSWORD_RECOVERY y se muestra el formulario de clave nueva.
