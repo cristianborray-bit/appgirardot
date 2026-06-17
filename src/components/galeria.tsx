@@ -20,6 +20,12 @@ const VIDEO_ID = galeria.video_youtube_id;
 // Ritmo de tamaños para que el mosaico no se vea como una grilla plana.
 const PATRON_MOSAICO = ["row-span-2", "", "", "sm:col-span-2", "", ""];
 
+// Cuántas fotos del mosaico (sin contar la destacada ni el video) se muestran
+// de entrada. En datos móviles, mostrar las 20 de una dispara demasiadas
+// descargas a la vez y la página se siente lenta o congelada; con "ver más"
+// el resto se pide solo cuando el visitante lo pide.
+const LIMITE_INICIAL = 6;
+
 function fotoUrl(archivo: string): string {
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
   return `${base}/storage/v1/object/public/galeria/${encodeURIComponent(archivo)}`;
@@ -71,15 +77,19 @@ function FotoTile({
   foto,
   indice,
   span,
+  sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw",
   preload,
   onAbrir,
 }: {
   foto: Foto;
   indice: number;
   span: string;
+  sizes?: string;
   preload?: boolean;
   onAbrir: (indice: number, trigger: HTMLButtonElement) => void;
 }) {
+  const [error, setError] = useState(false);
+
   return (
     <li
       className={`relative overflow-hidden rounded-2xl border border-agua-borde bg-agua ${span}`}
@@ -90,18 +100,27 @@ function FotoTile({
         aria-label={`Ver foto en grande: ${foto.titulo}`}
         className="group absolute inset-0 h-full w-full"
       >
-        <Image
-          src={fotoUrl(foto.archivo)}
-          alt={foto.titulo}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          preload={preload}
-          className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-        />
+        {error ? (
+          <span className="absolute inset-0 flex items-center justify-center px-2 text-center text-sm text-magdalena-suave">
+            No se pudo cargar
+          </span>
+        ) : (
+          <Image
+            src={fotoUrl(foto.archivo)}
+            alt={foto.titulo}
+            fill
+            sizes={sizes}
+            preload={preload}
+            onError={() => setError(true)}
+            className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+          />
+        )}
         <span className="absolute inset-0 bg-magdalena/0 transition-colors group-hover:bg-magdalena/10" />
-        <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-magdalena opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-          <ExpandirIcono />
-        </span>
+        {!error && (
+          <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-magdalena opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+            <ExpandirIcono />
+          </span>
+        )}
       </button>
     </li>
   );
@@ -109,6 +128,12 @@ function FotoTile({
 
 export function Galeria() {
   const [abierta, setAbierta] = useState<number | null>(null);
+  const [mostrarTodas, setMostrarTodas] = useState(false);
+  // Índice de la foto que falló al cargar en el lightbox (o null si ninguna).
+  // Se guarda el índice, no un booleano, para no necesitar un efecto que
+  // "reinicie" el error al cambiar de foto: simplemente se compara con
+  // `abierta` al renderizar.
+  const [errorGrande, setErrorGrande] = useState<number | null>(null);
   const ultimoTriggerRef = useRef<HTMLButtonElement | null>(null);
   const dialogoRef = useRef<HTMLDivElement>(null);
 
@@ -157,6 +182,8 @@ export function Galeria() {
   if (FOTOS.length === 0 && !VIDEO_ID) return null;
 
   const [hero, ...resto] = FOTOS;
+  const restoVisible = mostrarTodas ? resto : resto.slice(0, LIMITE_INICIAL);
+  const restantes = resto.length - restoVisible.length;
   const fotoAbierta = abierta !== null ? FOTOS[abierta] : null;
 
   return (
@@ -178,7 +205,14 @@ export function Galeria() {
 
       <ul className="mt-6 grid grid-cols-2 auto-rows-[150px] grid-flow-row-dense gap-3 sm:grid-cols-3 sm:auto-rows-[170px] lg:grid-cols-4 lg:auto-rows-[190px]">
         {hero && (
-          <FotoTile foto={hero} indice={0} span="col-span-2 row-span-2" preload onAbrir={abrir} />
+          <FotoTile
+            foto={hero}
+            indice={0}
+            span="col-span-2 row-span-2"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 66vw, 50vw"
+            preload
+            onAbrir={abrir}
+          />
         )}
 
         {VIDEO_ID && (
@@ -194,7 +228,7 @@ export function Galeria() {
           </li>
         )}
 
-        {resto.map((foto, i) => (
+        {restoVisible.map((foto, i) => (
           <FotoTile
             key={foto.archivo}
             foto={foto}
@@ -204,6 +238,18 @@ export function Galeria() {
           />
         ))}
       </ul>
+
+      {restantes > 0 && (
+        <div className="mt-5 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setMostrarTodas(true)}
+            className="h-12 rounded-xl bg-mango-oscuro px-6 font-bold text-white hover:bg-magdalena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+          >
+            Ver {restantes} fotos más
+          </button>
+        </div>
+      )}
 
       {fotoAbierta && abierta !== null && (
         <div
@@ -241,14 +287,21 @@ export function Galeria() {
             className="flex flex-col items-center gap-3"
           >
             <div className="relative h-[78vh] w-[90vw]">
-              <Image
-                src={fotoUrl(fotoAbierta.archivo)}
-                alt={fotoAbierta.titulo}
-                fill
-                sizes="90vw"
-                quality={90}
-                className="rounded-xl object-contain"
-              />
+              {errorGrande === abierta ? (
+                <div className="flex h-full w-full items-center justify-center rounded-xl bg-white/10 text-center text-white">
+                  No se pudo cargar esta foto.
+                </div>
+              ) : (
+                <Image
+                  src={fotoUrl(fotoAbierta.archivo)}
+                  alt={fotoAbierta.titulo}
+                  fill
+                  sizes="90vw"
+                  quality={90}
+                  onError={() => setErrorGrande(abierta)}
+                  className="rounded-xl object-contain"
+                />
+              )}
             </div>
             <p className="text-center text-white">
               {fotoAbierta.titulo}
