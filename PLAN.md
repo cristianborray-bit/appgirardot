@@ -58,7 +58,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 **Entregable:** ✅ [appgirardot.vercel.app](https://appgirardot.vercel.app) — chat respondiendo en producción
 **Nota:** las variables de entorno de Vercel solo aplican a deployments nuevos; si se cambian, hay que redesplegar (un push basta)
 
-## FASE 2 — Experiencia + Leads `[estado: 🔄 en curso — leads vivos; galería y video publicados, falta OG con foto real]`
+## FASE 2 — Experiencia + Leads `[estado: ✅ leads vivos; galería, video y OG con foto real publicados]`
 
 - [x] Flujo de calificación con botones: presupuesto, timeline, financiación (valores espejo de los check constraints de la tabla `leads`; los tres grupos opcionales, con des-selección)
 - [x] Captura de lead (nombre + email obligatorios, teléfono opcional ≥7 dígitos) ligada a su conversación — reenviar el formulario actualiza el lead (índice único por conversación), campo trampa anti-bots, rate limit propio
@@ -69,7 +69,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [x] **Compresión de las 5 fotos pesadas (2026-06-17):** hecho directamente desde la sesión con una herramienta temporal (sharp, redimensionado a 2200px + JPEG calidad 78, original respaldado antes de sobrescribir). Resultado real verificado en Supabase: las 5 bajaron de 3.5-4.2 MB a 200-307 KB (92-95% menos peso) sin reducir su resolución visible en el sitio. La herramienta temporal ya se borró del código tras confirmar el resultado
 - [x] **Fix de botones del lightbox en mobile reportado por Cristian (2026-06-17):** los botones de cerrar/anterior/siguiente no tenían fondo visible (solo aparecía al pasar el mouse, algo que no existe en celular) y las flechas quedaban a 8px del borde físico de la pantalla, zona donde el celular detecta gestos del sistema (volver atrás, centro de control) y a veces "roba" el toque. Se corrige dándoles un fondo oscuro semitransparente fijo + reacción visual al tocar, y alejando las flechas a 16px del borde
 - [x] **Segundo ajuste a los botones del lightbox tras nueva prueba de Cristian (2026-06-17):** el primer fix no bastó — con fotos verticales el botón de cerrar se perdía y volvía a aparecer al deslizar/hacer scroll pero sin funcionar, y la flecha de "anterior" no se veía. Causa nueva: el cuadro de la foto medía su alto con una unidad fija (`vh`) que en el navegador del celular no sigue el tamaño real visible (la barra del navegador se esconde/aparece al deslizar, dejando el botón de cerrar fuera de sitio); se cambia a una unidad dinámica (`dvh`), el mismo patrón que ya usa con éxito el chat estilo WhatsApp de esta página. Además, ambas flechas se alejan un poco más del borde (16px→24px) para evitar mejor el gesto de "volver atrás" del celular en el borde izquierdo
-- [ ] OG tags con foto real: vista previa atractiva al compartir por WhatsApp/Facebook (los OG de texto existen desde Fase 1; la imagen entra con la primera foto)
+- [x] OG tags con foto real (2026-06-18): la vista previa al compartir por WhatsApp/Facebook ya muestra la foto destacada de la piscina principal (antes solo salía texto)
 
 **Entregable:** flujo completo de usuario guardándose en Supabase
 

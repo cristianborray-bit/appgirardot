@@ -6,6 +6,10 @@ import "@fontsource/atkinson-hyperlegible/700.css";
 import "./globals.css";
 import { META_PIXEL_ID } from "@/lib/meta-pixel";
 
+// Foto destacada de content/galeria.json, usada como portada al compartir
+// el link (WhatsApp, Facebook, etc.) — antes no había imagen y solo salía texto.
+const FOTO_PORTADA_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL ?? ""}/storage/v1/object/public/galeria/subir2.jpg`;
+
 export const viewport: Viewport = {
   themeColor: "#16334f",
   // Con el chat a pantalla completa, el teclado del celular debe EMPUJAR el
@@ -23,6 +27,12 @@ export const metadata: Metadata = {
       "84 m² · 3 habitaciones · 3 baños · Piso 10 · Parqueadero privado. Chatea con el asistente y resuelve todas tus dudas al instante.",
     locale: "es_CO",
     type: "website",
+    images: [
+      {
+        url: FOTO_PORTADA_URL,
+        alt: "Piscina principal del conjunto Aqualina Orange, Girardot",
+      },
+    ],
   },
 };
 
