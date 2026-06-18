@@ -48,6 +48,7 @@ export async function loadConversation(
 export async function saveConversation(
   sessionKey: string,
   messages: UIMessage[],
+  utm?: { utmSource: string | null; utmMedium: string | null; utmCampaign: string | null },
 ) {
   const supabase = getSupabaseAdmin();
   if (!supabase) return;
@@ -59,6 +60,13 @@ export async function saveConversation(
         session_key: sessionKey,
         messages,
         message_count: messages.length,
+        // Solo se incluyen si vienen con dato: así una conversación que ya
+        // tenía origen registrado nunca se pisa con null en un mensaje
+        // posterior sin esos parámetros (upsert solo toca las columnas
+        // presentes en este objeto).
+        ...(utm?.utmSource ? { utm_source: utm.utmSource } : {}),
+        ...(utm?.utmMedium ? { utm_medium: utm.utmMedium } : {}),
+        ...(utm?.utmCampaign ? { utm_campaign: utm.utmCampaign } : {}),
       },
       { onConflict: "session_key" },
     )

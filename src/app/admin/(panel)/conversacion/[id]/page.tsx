@@ -22,7 +22,7 @@ export default async function DetalleConversacion({
   const { data: conv } = await supabase
     .from("conversations")
     .select(
-      "id, messages, message_count, suspicious_level, suspicious_reason, updated_at, leads(id, name)",
+      "id, messages, message_count, suspicious_level, suspicious_reason, utm_source, utm_medium, utm_campaign, updated_at, leads(id, name)",
     )
     .eq("id", convId)
     .maybeSingle();
@@ -48,6 +48,13 @@ export default async function DetalleConversacion({
         <p className="mt-1 text-magdalena-suave">
           {conv.message_count} mensajes · última actividad {fecha(conv.updated_at)}
         </p>
+        {conv.utm_source && (
+          <p className="mt-2 text-sm">
+            📣 Llegó por un anuncio · origen <strong>{conv.utm_source}</strong>
+            {conv.utm_medium ? ` · ${conv.utm_medium}` : ""}
+            {conv.utm_campaign ? ` · campaña ${conv.utm_campaign}` : ""}
+          </p>
+        )}
         {conv.suspicious_level > 0 && (
           <p className="mt-3 rounded-xl border border-mango/40 bg-mango-suave px-4 py-3">
             🚩 <strong>Señales de alerta:</strong>{" "}

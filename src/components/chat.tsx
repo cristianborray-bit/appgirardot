@@ -13,6 +13,7 @@ import {
   QUICK_REPLIES,
   WELCOME_MESSAGE,
   getSessionKey,
+  getUtmParams,
   messageText,
   marcarLeadEnviado,
   suscribirLeadEnviado,
@@ -71,6 +72,7 @@ export function Chat({
   onCerrar?: () => void;
 }) {
   const [sessionKey] = useState(getSessionKey);
+  const [utm] = useState(getUtmParams);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -96,10 +98,13 @@ export function Chat({
           body: {
             sessionKey,
             text: messageText(messages[messages.length - 1]),
+            utmSource: utm.utmSource,
+            utmMedium: utm.utmMedium,
+            utmCampaign: utm.utmCampaign,
           },
         }),
       }),
-    [sessionKey],
+    [sessionKey, utm],
   );
 
   const { messages, sendMessage, status, error, setMessages } = useChat({

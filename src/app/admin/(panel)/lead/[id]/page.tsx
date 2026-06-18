@@ -30,7 +30,7 @@ export default async function DetalleLead({
   const { data: lead } = await supabase
     .from("leads")
     .select(
-      "id, name, email, phone, budget, timeline, financing, score, category, status, notes, created_at, conversations(id, messages, message_count, suspicious_level, suspicious_reason)",
+      "id, name, email, phone, budget, timeline, financing, score, category, status, notes, created_at, conversations(id, messages, message_count, suspicious_level, suspicious_reason, utm_source, utm_medium, utm_campaign)",
     )
     .eq("id", leadId)
     .maybeSingle();
@@ -43,6 +43,9 @@ export default async function DetalleLead({
     message_count: number;
     suspicious_level: number;
     suspicious_reason: string | null;
+    utm_source: string | null;
+    utm_medium: string | null;
+    utm_campaign: string | null;
   } | null;
 
   return (
@@ -62,6 +65,13 @@ export default async function DetalleLead({
           {lead.email}
           {lead.phone ? ` · ${lead.phone}` : ""} · llegó el {fecha(lead.created_at)}
         </p>
+        {conversacion?.utm_source && (
+          <p className="mt-2 text-sm">
+            📣 Llegó por un anuncio · origen <strong>{conversacion.utm_source}</strong>
+            {conversacion.utm_medium ? ` · ${conversacion.utm_medium}` : ""}
+            {conversacion.utm_campaign ? ` · campaña ${conversacion.utm_campaign}` : ""}
+          </p>
+        )}
         <ul className="mt-4 grid gap-2 sm:grid-cols-3">
           <li className="rounded-xl border border-agua-borde bg-agua px-3 py-2">
             💰 <strong>{labelDe(BUDGET_OPTIONS, lead.budget)}</strong>

@@ -18,6 +18,45 @@ export function getSessionKey(): string {
   return fresh;
 }
 
+// Origen del visitante (utm_source/medium/campaign del anuncio que clickeó).
+// Mismo patrón de "primer toque" que cb_session: se fija una vez por
+// navegador y no se pisa en visitas posteriores sin esos parámetros.
+export const UTM_PATTERN = /^[\w.-]{1,100}$/;
+
+export type UtmParams = {
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+};
+
+function utmLimpio(valor: string | null): string | null {
+  return valor && UTM_PATTERN.test(valor) ? valor : null;
+}
+
+export function getUtmParams(): UtmParams {
+  const vacio: UtmParams = { utmSource: null, utmMedium: null, utmCampaign: null };
+  if (typeof window === "undefined") return vacio;
+
+  const params = new URLSearchParams(window.location.search);
+  const deUrl: UtmParams = {
+    utmSource: utmLimpio(params.get("utm_source")),
+    utmMedium: utmLimpio(params.get("utm_medium")),
+    utmCampaign: utmLimpio(params.get("utm_campaign")),
+  };
+  if (deUrl.utmSource) {
+    window.localStorage.setItem("cb_utm", JSON.stringify(deUrl));
+    return deUrl;
+  }
+
+  const guardado = window.localStorage.getItem("cb_utm");
+  if (!guardado) return vacio;
+  try {
+    return { ...vacio, ...(JSON.parse(guardado) as Partial<UtmParams>) };
+  } catch {
+    return vacio;
+  }
+}
+
 // "¿Ya dejó sus datos?" como mini-store sobre localStorage, para leerlo con
 // useSyncExternalStore (seguro en SSR y sin setState dentro de efectos).
 let leadListeners: Array<() => void> = [];

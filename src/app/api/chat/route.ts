@@ -8,7 +8,7 @@ import { openai } from "@ai-sdk/openai";
 import { getSystemPrompt } from "@/lib/prompt";
 import { loadConversation, saveConversation } from "@/lib/conversations";
 import { isRateLimited } from "@/lib/rate-limit";
-import { SESSION_KEY_PATTERN } from "@/lib/chat-content";
+import { SESSION_KEY_PATTERN, UTM_PATTERN } from "@/lib/chat-content";
 
 export const maxDuration = 60;
 
@@ -43,8 +43,18 @@ export async function GET(req: Request) {
   return Response.json({ messages: await loadConversation(sessionKey) });
 }
 
+function utmDelBody(value: unknown): string | null {
+  return typeof value === "string" && UTM_PATTERN.test(value) ? value : null;
+}
+
 export async function POST(req: Request) {
-  let body: { sessionKey?: unknown; text?: unknown };
+  let body: {
+    sessionKey?: unknown;
+    text?: unknown;
+    utmSource?: unknown;
+    utmMedium?: unknown;
+    utmCampaign?: unknown;
+  };
   try {
     body = await req.json();
   } catch {
@@ -56,6 +66,11 @@ export async function POST(req: Request) {
   }
 
   const { sessionKey, text } = body;
+  const utm = {
+    utmSource: utmDelBody(body.utmSource),
+    utmMedium: utmDelBody(body.utmMedium),
+    utmCampaign: utmDelBody(body.utmCampaign),
+  };
 
   if (typeof sessionKey !== "string" || !SESSION_KEY_PATTERN.test(sessionKey)) {
     return new Response("Sesión inválida. Recarga la página, por favor.", {
@@ -142,7 +157,7 @@ export async function POST(req: Request) {
       return "No pude responder en este momento 🙏. Espera un momentico y vuelve a intentarlo.";
     },
     onFinish: async ({ messages: finalMessages }) => {
-      await saveConversation(sessionKey, finalMessages);
+      await saveConversation(sessionKey, finalMessages, utm);
     },
   });
 }

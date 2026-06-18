@@ -26,6 +26,7 @@ type LeadRow = {
   conversations: {
     message_count: number;
     suspicious_level: number;
+    utm_source: string | null;
   } | null;
 };
 
@@ -35,6 +36,7 @@ type ConversationRow = {
   message_count: number;
   suspicious_level: number;
   suspicious_reason: string | null;
+  utm_source: string | null;
   updated_at: string;
   leads: { id: number; name: string }[];
 };
@@ -53,7 +55,7 @@ export default async function PanelPrincipal() {
     supabase
       .from("leads")
       .select(
-        "id, name, email, phone, budget, timeline, financing, score, category, status, created_at, conversations(message_count, suspicious_level)",
+        "id, name, email, phone, budget, timeline, financing, score, category, status, created_at, conversations(message_count, suspicious_level, utm_source)",
       )
       .order("score", { ascending: false })
       .order("created_at", { ascending: false })
@@ -61,7 +63,7 @@ export default async function PanelPrincipal() {
     supabase
       .from("conversations")
       .select(
-        "id, session_key, message_count, suspicious_level, suspicious_reason, updated_at, leads(id, name)",
+        "id, session_key, message_count, suspicious_level, suspicious_reason, utm_source, updated_at, leads(id, name)",
       )
       .order("updated_at", { ascending: false })
       .limit(20),
@@ -95,6 +97,14 @@ export default async function PanelPrincipal() {
                       {semaforo(lead.category, lead.score)} {lead.name}
                       {(lead.conversations?.suspicious_level ?? 0) > 0 && (
                         <span title="Conversación con señales de alerta"> 🚩</span>
+                      )}
+                      {lead.conversations?.utm_source && (
+                        <span
+                          title={`Llegó por un anuncio (${lead.conversations.utm_source})`}
+                          className="ml-2 rounded-full border border-mango/40 bg-mango-suave px-2 py-0.5 text-xs font-bold"
+                        >
+                          📣 {lead.conversations.utm_source}
+                        </span>
                       )}
                     </p>
                     <span className="rounded-full border border-agua-borde bg-agua px-3 py-1 text-sm font-bold">
@@ -141,6 +151,11 @@ export default async function PanelPrincipal() {
                     {conv.leads.length > 0
                       ? conv.leads[0].name
                       : "Visitante sin datos"}
+                    {conv.utm_source && (
+                      <span className="ml-2 rounded-full border border-mango/40 bg-mango-suave px-2 py-0.5 text-xs font-bold">
+                        📣 {conv.utm_source}
+                      </span>
+                    )}
                   </span>
                   <span className="text-sm text-magdalena-suave">
                     {conv.message_count} mensajes · {fecha(conv.updated_at)}
