@@ -143,9 +143,9 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [x] `OPENAI_API_KEY` + variables de Supabase en Vercel — hechas y verificadas en vivo
 - [x] Fotos + video del apto → para Fase 2
 - [x] Cuenta en resend.com + `RESEND_API_KEY` + `CRISTIAN_PHONE` en Vercel — hechas el 2026-06-12
-- [ ] `CRON_SECRET` en Vercel (valor generado y entregado por chat el 2026-06-12) → enciende el cron de seguimientos
-- [ ] Dominio elegido y comprado → cierra Fase 4 (emails a leads) y sirve para Fase 5. Candidatos libres a $11.25/año: `aqualinagirardot.com` · `aptoaqualina.com` · `aptogirardot.com` · `ventaaptogirardot.com`
-- [ ] Confirmar email de notificaciones: cristianborray@gmail.com
+- [x] `CRON_SECRET` en Vercel — hecho el 2026-06-16 (ver Fase 4)
+- [x] Dominio elegido y comprado — `aqualinagirardot.company`, comprado y verificado el 2026-06-16 (ver Fase 4/5)
+- [x] Confirmar email de notificaciones — ya funcionando: las alertas de leads HOT llegan a cristianborray@gmail.com desde Fase 4
 - [x] Crear el píxel de "Aqualina Orange" en Meta Events Manager y darme el ID numérico — hecho el 2026-06-18 (`27511282028466005`)
 - [x] Agregar en Vercel (Settings → Environment Variables) `NEXT_PUBLIC_META_PIXEL_ID` = `27511282028466005` en el entorno "Production" — hecho por Cristian (2026-06-18)
 - [x] **Diagnóstico: por qué el sitio en vivo seguía sin el píxel (2026-06-18):** Vercel estaba publicando como "producción" la rama vieja `claude/keen-gauss-voe9u1` en vez de la rama de trabajo actual `claude/youthful-hamilton-t01tfw` (donde está el código del píxel). Cristian cambió la rama por defecto del repositorio en GitHub (Settings → General → Default branch) como primer intento. Se confirmó que el cambio en GitHub quedó bien hecho, y se forzó una compilación nueva para probarlo — pero, aun con la compilación lista y sin errores, Vercel siguió sin marcarla como "producción" ni publicarla en `aqualinagirardot.company`. Conclusión: el cambio en GitHub no alcanza por sí solo; Vercel guarda su propia configuración interna de "rama de producción" y no se actualiza sola. Se confirmó además, revisando directamente el código ya compilado, que el píxel está 100% instalado y correcto — el problema es solo de publicación, no del código
@@ -157,4 +157,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 - [ ] Escribir en Ads Manager (conjunto de anuncios → Audiencia → Segmentación detallada) intereses como: "Bienes raíces", "Inversión inmobiliaria", "Alquiler vacacional", "Compra de vivienda" / "Apartamentos", "Hipotecas", "Turismo en Girardot" o "Viajes" — eligiendo siempre la opción que Meta sugiera al escribir cada término, combinando 2-3 por variación de anuncio según el ángulo (inversión, familia, urgencia)
 - [ ] Revisar si Meta exige marcar "Categoría especial de anuncios: Vivienda" en este conjunto — si aplica, restringe edad/sexo/exclusiones por ubicación y no hay forma de confirmarlo por herramienta
 - [ ] Revisar Edad, Sexo y Posicionamiento del conjunto de anuncios en Ads Manager — no se pueden leer con las herramientas disponibles; pudieron quedar vacíos o distintos a lo esperado tras el cambio de ubicación del 2026-06-18
-- [ ] "Sí" final y explícito para activar la campaña/anuncios en Meta Ads (siguen en PAUSA con tope de 10.000 COP/día hasta entonces)
+- [x] Cristian revisó Ads Manager y encendió los 3 anuncios (2026-06-18) — confirmado por herramienta: los 3 quedaron en `ACTIVE` y Meta los está revisando (`PENDING_REVIEW`, normal, tarda de minutos a 24h, no requiere acción)
+- [ ] **Aún en PAUSA (esto es lo que falta para que algo se muestre o gaste):** el CONJUNTO de anuncios y la CAMPAÑA siguen pausados — confirmado por herramienta. Aunque los 3 anuncios ya están "Activos", nada se publica ni gasta mientras el conjunto y la campaña no se enciendan también. Encender ambos con sus interruptores en las pestañas "Campañas" y "Conjuntos" de Ads Manager
+- [ ] Anuncio suelto "Nuevo anuncio de Tráfico" (en borrador, interruptor apagado) que apareció en la lista junto a los 3 aprobados — no es ninguna de las 3 variaciones; revisar y borrarlo para evitar confusión (mientras siga en borrador no gasta ni se publica solo)
+- [x] Presupuesto verificado de nuevo por herramienta tras los cambios: sigue en $10.000 COP/día — sin cambios
