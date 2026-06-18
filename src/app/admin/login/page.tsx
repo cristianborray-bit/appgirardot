@@ -32,6 +32,17 @@ export default function LoginAdmin() {
       window.history.replaceState(null, "", window.location.pathname);
     }
 
+    // Supabase debería dejar la sesión guardada solo con el link, pero esa
+    // parte interna a veces no llega a tiempo (o falla en silencio) y el
+    // botón de guardar contraseña falla por no encontrar sesión. La forzamos
+    // a mano con los datos del propio link para que sea confiable.
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    const access_token = params.get("access_token");
+    const refresh_token = params.get("refresh_token");
+    if (params.get("type") === "recovery" && access_token && refresh_token) {
+      supabase.auth.setSession({ access_token, refresh_token });
+    }
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
