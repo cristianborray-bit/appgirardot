@@ -119,7 +119,7 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 ## FASE 6 — Lanzamiento + Iteración `[estado: 🔄 en curso]`
 
 - [ ] Textos para anuncios (Facebook, Instagram, OLX) apuntando al link
-- [ ] Limpiar leads de prueba del panel antes de lanzar
+- [x] **Limpiar leads de prueba del panel antes de lanzar (2026-06-18):** borrados los 3 leads de prueba ("cristian borray" auto-prueba, "Comprador Caliente", "Prueba Alerta Email") junto con su único registro de `email_log` y sus 3 conversaciones asociadas. El lead real (Erika) y su conversación quedaron intactos. Verificado después: 1 lead, 1 email_log, 10 conversaciones en la base
 - [ ] Revisión periódica de conversaciones reales → mejoras al prompt y a la ficha
 - [x] **Fix de recuperación de contraseña del panel admin reportada por Cristian (2026-06-17):** al pedir "Send password recovery" desde el dashboard de Supabase, el link lo mandaba a `localhost:3000` con un error técnico. Dos causas distintas: (1) el Site URL de Supabase Auth estaba mal configurado; (2) aunque el link funcionara, `/admin/login` no tenía ningún formulario para completar la recuperación. Se agrega ese formulario: si el link es válido se muestra "Pon tu contraseña nueva"; si ya venció o se usó, un aviso claro en español en vez del error técnico
 - [x] **Cristian corrigió el Site URL** en Supabase a `https://aqualinagirardot.company/admin/login` (con el path completo: si solo se pone el dominio, el link cae en la portada y ahí nada puede procesarlo)
