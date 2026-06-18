@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getSessionKey } from "@/lib/chat-content";
+import { trackLead } from "@/lib/meta-pixel";
 import {
   BUDGET_OPTIONS,
   TIMELINE_OPTIONS,
@@ -102,6 +103,7 @@ export function CapturaLead({
         setEstado({ fase: "formulario", error: amigable });
         return;
       }
+      trackLead();
       setEstado({ fase: "listo", nombre });
       onListo(nombre);
     } catch {

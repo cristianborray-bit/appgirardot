@@ -5,11 +5,12 @@ const SUPABASE_HOST = "umqotxoixboqkgerlupy.supabase.co";
 const CSP = [
   "default-src 'self'",
   // Next.js App Router requiere unsafe-inline para estilos y scripts en runtime
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  // connect.facebook.net carga el píxel de Meta Ads (conversiones de la campaña)
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net",
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: https://${SUPABASE_HOST}`,
+  `img-src 'self' data: https://${SUPABASE_HOST} https://www.facebook.com`,
   "font-src 'self' data:",
-  `connect-src 'self' https://${SUPABASE_HOST} https://*.supabase.co https://api.openai.com`,
+  `connect-src 'self' https://${SUPABASE_HOST} https://*.supabase.co https://api.openai.com https://www.facebook.com`,
   // El embed de YouTube-nocookie de la galería vive en un iframe
   "frame-src https://www.youtube-nocookie.com",
   // Nadie puede incrustar este sitio en un iframe (anti-clickjacking)
