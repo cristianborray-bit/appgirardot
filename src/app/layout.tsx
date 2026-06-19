@@ -3,6 +3,16 @@ import Script from "next/script";
 import "@fontsource-variable/fraunces";
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
+// Tipografía del rediseño "Arena" (landing pública). Solo registra las
+// fuentes; nada las usa todavía — eso llega con los componentes de R1.
+import "@fontsource/spectral/500.css";
+import "@fontsource/spectral/500-italic.css";
+import "@fontsource/spectral/600.css";
+import "@fontsource/hanken-grotesk/400.css";
+import "@fontsource/hanken-grotesk/500.css";
+import "@fontsource/hanken-grotesk/600.css";
+import "@fontsource/hanken-grotesk/700.css";
+import "@fontsource/hanken-grotesk/800.css";
 import "./globals.css";
 import { META_PIXEL_ID } from "@/lib/meta-pixel";
 

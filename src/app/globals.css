@@ -78,3 +78,187 @@ a {
     animation: none;
   }
 }
+
+/* ============================================================
+   Paleta "Arena" — landing pública (rediseño Aqualina Orange).
+   Tokens NUEVOS con prefijo arena-*: se agregan sin tocar ni
+   reemplazar los de arriba (magdalena/mango/agua), que sigue
+   usando /admin sin cambios. Fuente: README del paquete de
+   diseño "Concepto A · Arena" entregado por Cristian.
+   ============================================================ */
+@theme {
+  --color-arena-bg: #f4efe7;
+  --color-arena-surface: #ffffff;
+  --color-arena-surface-warm: #efe7da;
+  --color-arena-border: #e7ddcd;
+  --color-arena-dark: #211c16;
+  --color-arena-text: #26211a;
+  --color-arena-text-mid: #73685a;
+  --color-arena-text-muted: #8a7f6e;
+  --color-arena-text-faint: #9a8d77;
+  --color-arena-accent: #a6593b;
+  --color-arena-accent-light: #cf7d4f;
+  --color-arena-gold-warm: #e9c9a8;
+  --color-arena-green-live: #3f9568;
+  --color-arena-climate-bg: #1d2a2a;
+  --color-arena-climate-text: #eef3f0;
+  --color-arena-climate-accent: #9fc7b4;
+  --color-arena-shell: #e7e5df;
+  --color-arena-phone-rim: #e6ddcd;
+
+  --font-arena-display: "Spectral", Georgia, serif;
+  --font-arena-body: "Hanken Grotesk", system-ui, sans-serif;
+
+  --radius-arena-pill: 30px;
+  --radius-arena-lg: 24px;
+  --radius-arena-md: 22px;
+  /* El README da rangos (sm: 18-20px, xs: 13-15px) en vez de un valor
+     fijo: se toma el extremo que más se repite en las medidas de cada
+     sección. Para fidelidad pixel-perfect, los componentes de R1 pueden
+     seguir usando el valor exacto de su sección con un valor arbitrario
+     de Tailwind en vez de este token. */
+  --radius-arena-sm: 18px;
+  --radius-arena-xs: 13px;
+  --radius-arena-hero: 28px;
+  --radius-arena-avatar: 13px;
+
+  --shadow-arena-phone: 0 40px 80px -30px rgba(60, 44, 22, 0.5);
+  --shadow-arena-owner: 0 5px 14px rgba(60, 44, 20, 0.26);
+  --shadow-arena-hero-price: 0 6px 18px rgba(0, 0, 0, 0.2);
+  --shadow-arena-float: 0 14px 30px -8px rgba(60, 44, 20, 0.55);
+
+  /* Animaciones continuas, sin delay propio de cada elemento: se usan
+     tal cual con animate-arena-*. Las de entrada (fadeUp/riseIn/pop/
+     typing) necesitan un delay distinto por elemento (efecto stagger),
+     así que sus @keyframes quedan listos abajo, pero se conectan en la
+     fase de componentes (R1), no aquí, para no inventar valores. */
+  --animate-arena-kenburns: arena-kenburns 16s ease-in-out infinite alternate;
+  --animate-arena-badge-glow: arena-badge-glow 2.6s ease-in-out infinite;
+  --animate-arena-float: arena-float-y 3.2s ease-in-out infinite;
+  /* El README da un rango (1.4s-1.6s) para este: se usa el punto medio. */
+  --animate-arena-nudge: arena-nudge 1.5s ease-in-out infinite;
+  --animate-arena-shine: arena-shine 3.6s linear infinite;
+  --animate-arena-pulse-owner: arena-pulse-dot 2.4s infinite;
+  --animate-arena-pulse-ai: arena-pulse-dot 1.8s infinite;
+
+  /* riseIn sí tiene un único valor fijo (sin variar por elemento): se
+     dispara con IntersectionObserver al entrar al viewport (eso es
+     comportamiento de R1), pero la animación en sí ya queda lista aquí. */
+  --animate-arena-rise-in: arena-rise-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes arena-kenburns {
+  0% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1.12);
+  }
+}
+@keyframes arena-badge-glow {
+  0%,
+  100% {
+    box-shadow: 0 6px 16px rgba(166, 89, 59, 0.4);
+    transform: translateY(0);
+  }
+  50% {
+    box-shadow: 0 10px 26px rgba(166, 89, 59, 0.6);
+    transform: translateY(-1px);
+  }
+}
+@keyframes arena-float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes arena-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+@keyframes arena-shine {
+  0% {
+    background-position: 220% 0;
+  }
+  100% {
+    background-position: -220% 0;
+  }
+}
+@keyframes arena-pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+@keyframes arena-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes arena-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes arena-pop {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes arena-typing {
+  0%,
+  70%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+/* Interruptor general para quien prefiere menos movimiento: ninguna
+   animación ni transición de la landing corre, sin importar si se
+   aplicó con clase animate-arena-*, valor arbitrario o estilo en
+   línea. Las animaciones en bucle terminan en su primer fotograma en
+   vez de seguir "corriendo" de forma imperceptible (.001s infinito
+   sigue siendo movimiento; forzar 1 sola vuelta sí lo detiene). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
