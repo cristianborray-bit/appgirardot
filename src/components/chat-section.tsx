@@ -52,22 +52,22 @@ export function ChatSection() {
     <>
       {/* Tarjeta de invitación: solo en celular, mientras el chat está cerrado */}
       {!abierto && (
-        <div className="rounded-3xl border border-agua-borde bg-white p-5 shadow-sm lg:hidden">
+        <div className="rounded-arena-lg border border-arena-border bg-arena-surface p-5 shadow-arena-owner font-arena-body text-arena-text lg:hidden">
           <div className="flex items-center gap-3">
             <div
               aria-hidden="true"
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mango-suave text-2xl"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-arena-surface-warm text-2xl"
             >
               🤖
             </div>
             <div>
               <p className="font-bold leading-tight">Asistente de Cristian</p>
-              <p className="text-sm text-magdalena-suave">
+              <p className="text-sm text-arena-text-mid">
                 Inteligencia artificial · Responde al instante
               </p>
             </div>
           </div>
-          <p className="mt-3 leading-relaxed text-magdalena-suave">
+          <p className="mt-3 leading-relaxed text-arena-text-mid">
             Pregúntale lo que quieras del apartamento: precios, visitas, zonas
             comunes. Te contesta al momento, a cualquier hora.
           </p>
@@ -75,7 +75,7 @@ export function ChatSection() {
             ref={abrirRef}
             type="button"
             onClick={() => setAbierto(true)}
-            className="mt-4 h-14 w-full rounded-xl bg-mango-oscuro px-6 text-lg font-bold text-white hover:bg-magdalena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+            className="mt-4 h-14 w-full rounded-arena-sm bg-arena-dark px-6 text-lg font-bold text-arena-bg hover:bg-arena-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent"
           >
             💬 Abrir el chat
           </button>
@@ -97,7 +97,7 @@ export function ChatSection() {
       >
         <Chat
           onCerrar={cerrar}
-          className="h-dvh lg:h-[620px] lg:rounded-3xl lg:border lg:border-agua-borde lg:shadow-sm"
+          className="h-dvh lg:h-[620px] lg:rounded-arena-lg lg:border lg:border-arena-border lg:shadow-arena-owner"
         />
       </div>
 
@@ -107,7 +107,7 @@ export function ChatSection() {
           type="button"
           onClick={() => setAbierto(true)}
           aria-label="Abrir el chat"
-          className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-mango-oscuro text-2xl text-white shadow-lg hover:bg-magdalena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro lg:hidden"
+          className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-arena-dark text-2xl text-arena-bg shadow-arena-float hover:bg-arena-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent lg:hidden"
         >
           💬
         </button>

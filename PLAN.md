@@ -134,17 +134,17 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 
 **Entregable:** pauta activa, leads entrando solos
 
-## FASE 7 — Rediseño visual "Arena" `[estado: 🔄 en curso — R0 + R1 completadas, esperando OK para R2]`
+## FASE 7 — Rediseño visual "Arena" `[estado: 🔄 en curso — R0 + R1 + R2 completadas, esperando OK para R3]`
 
 Cristian entregó un diseño hi-fi documentado (paquete "Concepto A · Arena": README + HTML de referencia) para renovar la landing pública. Se ejecuta en 4 sub-fases (R0-R3), cada una con el mismo gate de cierre que el resto de este plan (app verificada corriendo + revisión de código + auditoría de diseño si hubo interfaz + commit/push + OK explícito de Cristian antes de abrir la siguiente). Decisiones ya tomadas con Cristian: fiel al diseño tal cual (no simplificar por legibilidad), el formulario de contacto lleva al chat en vez de ser su propio flujo, diseño ancho dedicado para escritorio (no solo el mockup de celular estirado), y primero un link de prueba antes de tocar producción.
 
 - [x] **R0 · Cimientos de diseño (completada, modelo Sonnet):** paleta, tipografía, radios, sombras y animaciones del diseño "Arena" como tokens nuevos en `globals.css` (prefijo `arena-*`, 100% aditivos: ningún token existente que usa `/admin` se tocó ni se borró). Fuentes Spectral (títulos) y Hanken Grotesk (texto) autohospedadas con `@fontsource`, igual que las fuentes actuales — sin depender de Google Fonts ni abrir la política de seguridad del sitio a dominios nuevos. Cero cambio visual: ningún componente usa los tokens todavía, eso llega con R1. Autocrítica antes de entregar: 2 valores que el README daba como rango (no como número exacto) se ajustaron al extremo que más se repite en los componentes reales del diseño, y se agregó la animación `riseIn` (se había dejado pendiente por error) porque el README sí le da un valor único y completo, a diferencia de las demás animaciones de entrada cuyo retraso varía según el elemento
 - [x] **R1 · Estructura y secciones (completada):** `page.tsx` reconstruido con las 15 secciones del diseño Arena, fiel al píxel, con diseño ancho centrado para escritorio (`md:max-w-3xl lg:max-w-4xl`), assets optimizados (portada.jpg + perfil-clean.jpg en `public/`), componente `ScrollReveal` para animaciones al hacer scroll, y smooth scrolling con respeto a `prefers-reduced-motion`. Los componentes funcionales existentes (ChatSection, Galería) se integran sin modificar su lógica — R2 les cambia el look. Autocrítica: 5 diferencias de píxel detectadas y corregidas (padding de badges del hero, letter-spacing de 3 encabezados Spectral, color del navbar, padding horizontal de secciones proceso y verificación)
-- [ ] R2 · Reconectar lo vivo: vestir con los tokens "Arena" el chat, la captura de leads y la galería reales (los que ya funcionan en producción), sin tocar su lógica
+- [x] **R2 · Reconectar lo vivo (completada):** los 4 componentes funcionales (chat-section, chat, lead-form, galería) vestidos con tokens Arena sin tocar su lógica. Mapeados todos los colores (magdalena→arena-dark, agua→arena-bg, mango→arena-accent), tipografía (font-arena-body/display), radios (arena-sm/xs/lg), sombras (arena-owner/float) y focus rings (arena-accent). Galería: encabezado alineado al patrón de sección Arena (11px label + Spectral heading + 12.5px subtitle), contenedor con padding Arena, lightbox con tokens Arena. Chat: font-arena-body explícito para overlay mobile (escapa del contenedor de la página). Autocrítica: 2 inconsistencias encontradas y corregidas (subtítulo de galería sin text-[12.5px], foto del lightbox con rounded-xl en vez de rounded-arena-xs)
 - [ ] R3 · Cierre: auditoría completa, link de prueba para que Cristian revise desde el celular, y despliegue a producción solo con su visto bueno final
 
 **Entregable parcial (R0):** base de tokens lista en la rama `claude/quirky-newton-eo5mp1` — sin ningún cambio visible todavía en el sitio
-**Pendiente de Cristian:** OK para arrancar R2
+**Pendiente de Cristian:** OK para arrancar R3
 
 ---
 

@@ -50,10 +50,10 @@ function Burbuja({
   return (
     <div className={own ? "flex justify-end" : "flex justify-start"}>
       <div
-        className={`max-w-[85%] whitespace-pre-wrap break-words rounded-2xl border px-4 py-3 leading-relaxed ${
+        className={`max-w-[85%] whitespace-pre-wrap break-words rounded-arena-sm border px-4 py-3 leading-relaxed ${
           own
-            ? "rounded-br-md border-mango/30 bg-mango-suave"
-            : "rounded-bl-md border-agua-borde bg-white"
+            ? "rounded-br-md border-arena-accent/30 bg-arena-surface-warm"
+            : "rounded-bl-md border-arena-border bg-arena-surface"
         }`}
       >
         {children}
@@ -166,27 +166,27 @@ export function Chat({
   }
 
   return (
-    <div className={`flex flex-col overflow-hidden bg-white ${className}`}>
-      <div className="flex items-center gap-2 border-b border-agua-borde px-3 py-3 sm:px-4">
+    <div className={`flex flex-col overflow-hidden bg-arena-surface font-arena-body text-arena-text ${className}`}>
+      <div className="flex items-center gap-2 border-b border-arena-border px-3 py-3 sm:px-4">
         {onCerrar && (
           <button
             type="button"
             onClick={onCerrar}
             aria-label="Volver a la página"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-2xl hover:bg-agua focus-visible:outline-2 focus-visible:outline-mango-oscuro lg:hidden"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-2xl hover:bg-arena-bg focus-visible:outline-2 focus-visible:outline-arena-accent lg:hidden"
           >
             ←
           </button>
         )}
         <div
           aria-hidden="true"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-mango-suave text-xl"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-arena-surface-warm text-xl"
         >
           🤖
         </div>
         <div>
           <p className="font-bold leading-tight">Asistente de Cristian</p>
-          <p className="text-sm text-magdalena-suave">
+          <p className="text-sm text-arena-text-mid">
             Inteligencia artificial · Responde al instante
           </p>
         </div>
@@ -197,7 +197,7 @@ export function Chat({
         role="log"
         aria-live="polite"
         aria-label="Conversación con el asistente"
-        className="flex-1 space-y-4 overflow-y-auto overscroll-contain bg-agua px-4 py-5"
+        className="flex-1 space-y-4 overflow-y-auto overscroll-contain bg-arena-bg px-4 py-5"
       >
         <Burbuja role="assistant">{WELCOME_MESSAGE}</Burbuja>
 
@@ -224,7 +224,7 @@ export function Chat({
         {status === "submitted" && (
           <div className="flex justify-start">
             <div
-              className="escribiendo rounded-2xl rounded-bl-md border border-agua-borde bg-white px-4 py-3 text-xl leading-none text-magdalena-suave"
+              className="escribiendo rounded-arena-sm rounded-bl-md border border-arena-border bg-arena-surface px-4 py-3 text-xl leading-none text-arena-text-muted"
               aria-label="El asistente está escribiendo"
             >
               <span>●</span> <span>●</span> <span>●</span>
@@ -236,8 +236,8 @@ export function Chat({
           <div
             className={
               notice.isNotice
-                ? "rounded-2xl border border-mango/40 bg-mango-suave px-4 py-3"
-                : "rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-900"
+                ? "rounded-arena-sm border border-arena-accent/40 bg-arena-surface-warm px-4 py-3"
+                : "rounded-arena-sm border border-red-200 bg-red-50 px-4 py-3 text-red-900"
             }
           >
             {notice.text}
@@ -245,7 +245,7 @@ export function Chat({
         )}
       </div>
 
-      <div className="space-y-2 border-t border-agua-borde px-3 pt-3">
+      <div className="space-y-2 border-t border-arena-border px-3 pt-3">
         {!hasUserMessage && (
           <div className="grid grid-cols-2 gap-2">
             {QUICK_REPLIES.map(({ emoji, label }) => (
@@ -253,7 +253,7 @@ export function Chat({
                 key={label}
                 type="button"
                 onClick={() => send(label)}
-                className="min-h-12 rounded-xl border border-mango bg-white px-3 py-2.5 text-[15px] font-bold leading-snug hover:bg-mango-suave focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+                className="min-h-12 rounded-arena-sm border border-arena-accent bg-arena-surface px-3 py-2.5 text-[15px] font-bold leading-snug hover:bg-arena-surface-warm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent"
               >
                 <span aria-hidden="true">{emoji}</span> {label}
               </button>
@@ -263,14 +263,14 @@ export function Chat({
 
         {!capturaVisible &&
           (yaEnviado ? (
-            <p className="flex min-h-12 items-center justify-center rounded-xl border border-agua-borde bg-agua px-3 text-[15px] font-bold text-magdalena-suave">
+            <p className="flex min-h-12 items-center justify-center rounded-arena-sm border border-arena-border bg-arena-bg px-3 text-[15px] font-bold text-arena-text-mid">
               ✓ Cristian te contactará pronto
             </p>
           ) : (
             <button
               type="button"
               onClick={() => setMostrarCaptura(true)}
-              className="min-h-12 w-full rounded-xl border-2 border-mango bg-white px-3 text-[15px] font-bold hover:bg-mango-suave focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+              className="min-h-12 w-full rounded-arena-sm border-2 border-arena-accent bg-arena-surface px-3 text-[15px] font-bold hover:bg-arena-surface-warm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent"
             >
               📝 Que Cristian me contacte
             </button>
@@ -295,12 +295,12 @@ export function Chat({
           placeholder="Escribe tu pregunta…"
           autoComplete="off"
           maxLength={1000}
-          className="h-12 min-w-0 flex-1 rounded-xl border border-agua-borde px-4 text-[16px] placeholder:text-magdalena-suave/70 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-mango-oscuro"
+          className="h-12 min-w-0 flex-1 rounded-arena-xs border border-arena-border px-4 text-[16px] placeholder:text-arena-text-muted/70 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-arena-accent"
         />
         <button
           type="submit"
           disabled={busy || input.trim().length === 0}
-          className="h-12 shrink-0 rounded-xl bg-mango-oscuro px-5 font-bold text-white hover:bg-magdalena disabled:opacity-50 disabled:hover:bg-mango-oscuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+          className="h-12 shrink-0 rounded-arena-xs bg-arena-dark px-5 font-bold text-arena-bg hover:bg-arena-accent disabled:opacity-50 disabled:hover:bg-arena-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent"
         >
           Enviar
         </button>

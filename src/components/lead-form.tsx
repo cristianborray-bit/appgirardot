@@ -34,7 +34,7 @@ function Pregunta({
     <fieldset>
       <legend className="font-bold">
         {titulo}{" "}
-        <span className="font-normal text-magdalena-suave">(opcional)</span>
+        <span className="font-normal text-arena-text-mid">(opcional)</span>
       </legend>
       <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {options.map(({ value, label }) => {
@@ -45,10 +45,10 @@ function Pregunta({
               type="button"
               aria-pressed={active}
               onClick={() => onSelect(active ? null : value)}
-              className={`min-h-12 rounded-xl border px-3 py-2.5 text-left text-[15px] leading-snug focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro ${
+              className={`min-h-12 rounded-arena-sm border px-3 py-2.5 text-left text-[15px] leading-snug focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent ${
                 active
-                  ? "border-mango-oscuro bg-mango-suave font-bold"
-                  : "border-agua-borde bg-white hover:border-mango"
+                  ? "border-arena-accent bg-arena-surface-warm font-bold"
+                  : "border-arena-border bg-arena-surface hover:border-arena-accent"
               }`}
             >
               {active ? "✓ " : ""}
@@ -119,13 +119,13 @@ export function CapturaLead({
     return (
       <div
         role="status"
-        className="rounded-2xl rounded-bl-md border border-agua-borde bg-white px-4 py-4 text-center"
+        className="rounded-arena-sm rounded-bl-md border border-arena-border bg-arena-surface px-4 py-4 text-center"
       >
         <p aria-hidden="true" className="text-3xl">
           🤝
         </p>
         <p className="mt-2 font-bold">¡Listo, {estado.nombre}!</p>
-        <p className="mt-1 leading-relaxed text-magdalena-suave">
+        <p className="mt-1 leading-relaxed text-arena-text-mid">
           Cristian recibió tus datos y te escribirá al correo. Si tienes más
           preguntas, aquí sigo.
         </p>
@@ -138,12 +138,12 @@ export function CapturaLead({
   return (
     <form
       onSubmit={enviar}
-      className="space-y-5 rounded-2xl rounded-bl-md border border-agua-borde bg-white p-4"
+      className="space-y-5 rounded-arena-sm rounded-bl-md border border-arena-border bg-arena-surface p-4"
     >
       <div className="flex items-start justify-between gap-2">
         <p className="font-bold leading-snug">
           📝 Que Cristian te contacte
-          <span className="block text-sm font-normal text-magdalena-suave">
+          <span className="block text-sm font-normal text-arena-text-mid">
             Solo nombre y correo. Lo demás es opcional.
           </span>
         </p>
@@ -151,7 +151,7 @@ export function CapturaLead({
           type="button"
           onClick={onCerrar}
           aria-label="Ahora no, cerrar formulario"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl text-magdalena-suave hover:bg-agua focus-visible:outline-2 focus-visible:outline-mango-oscuro"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl text-arena-text-muted hover:bg-arena-bg focus-visible:outline-2 focus-visible:outline-arena-accent"
         >
           ✕
         </button>
@@ -176,7 +176,7 @@ export function CapturaLead({
         onSelect={setFinancing}
       />
 
-      <div className="space-y-4 border-t border-agua-borde pt-4">
+      <div className="space-y-4 border-t border-arena-border pt-4">
         <div>
           <label htmlFor="lead-nombre" className="font-bold">
             Tu nombre
@@ -188,7 +188,7 @@ export function CapturaLead({
             minLength={2}
             maxLength={MAX_NAME_LENGTH}
             autoComplete="name"
-            className="mt-1.5 h-12 w-full rounded-xl border border-agua-borde px-4 text-[16px] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-mango-oscuro"
+            className="mt-1.5 h-12 w-full rounded-arena-xs border border-arena-border px-4 text-[16px] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-arena-accent"
           />
         </div>
         <div>
@@ -202,13 +202,13 @@ export function CapturaLead({
             required
             autoComplete="email"
             placeholder="nombre@gmail.com"
-            className="mt-1.5 h-12 w-full rounded-xl border border-agua-borde px-4 text-[16px] placeholder:text-magdalena-suave/60 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-mango-oscuro"
+            className="mt-1.5 h-12 w-full rounded-arena-xs border border-arena-border px-4 text-[16px] placeholder:text-arena-text-muted/60 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-arena-accent"
           />
         </div>
         <div>
           <label htmlFor="lead-celular" className="font-bold">
             Tu celular{" "}
-            <span className="font-normal text-magdalena-suave">(opcional)</span>
+            <span className="font-normal text-arena-text-mid">(opcional)</span>
           </label>
           <input
             id="lead-celular"
@@ -217,7 +217,7 @@ export function CapturaLead({
             maxLength={MAX_PHONE_LENGTH}
             autoComplete="tel"
             placeholder="300 123 4567"
-            className="mt-1.5 h-12 w-full rounded-xl border border-agua-borde px-4 text-[16px] placeholder:text-magdalena-suave/60 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-mango-oscuro"
+            className="mt-1.5 h-12 w-full rounded-arena-xs border border-arena-border px-4 text-[16px] placeholder:text-arena-text-muted/60 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-arena-accent"
           />
         </div>
       </div>
@@ -241,7 +241,7 @@ export function CapturaLead({
       {estado.fase === "formulario" && estado.error && (
         <p
           role="status"
-          className="rounded-2xl border border-mango/40 bg-mango-suave px-4 py-3"
+          className="rounded-arena-sm border border-arena-accent/40 bg-arena-surface-warm px-4 py-3"
         >
           {estado.error}
         </p>
@@ -250,12 +250,12 @@ export function CapturaLead({
       <button
         type="submit"
         disabled={enviando}
-        className="h-12 w-full rounded-xl bg-mango-oscuro px-5 font-bold text-white hover:bg-magdalena disabled:opacity-50 disabled:hover:bg-mango-oscuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+        className="h-12 w-full rounded-arena-sm bg-arena-dark px-5 font-bold text-arena-bg hover:bg-arena-accent disabled:opacity-50 disabled:hover:bg-arena-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent"
       >
         {enviando ? "Enviando…" : "Enviar mis datos a Cristian"}
       </button>
 
-      <p className="text-center text-sm leading-6 text-magdalena-suave">
+      <p className="text-center text-sm leading-6 text-arena-text-mid">
         Tus datos solo los ve Cristian, el dueño. Sin spam.
       </p>
     </form>

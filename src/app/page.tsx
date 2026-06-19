@@ -360,7 +360,7 @@ export default function Home() {
           </div>
         </ScrollReveal>
 
-        {/* ── GALERÍA (componente existente — R2 le cambia el look) ── */}
+        {/* ── GALERÍA (componente existente — R2 vestido con Arena) ── */}
         <ScrollReveal>
           <Galeria />
         </ScrollReveal>
@@ -588,7 +588,7 @@ export default function Home() {
           </div>
         </ScrollReveal>
 
-        {/* ── CHAT (componente existente — R2 le cambia el look) ── */}
+        {/* ── CHAT (componente existente — R2 vestido con Arena) ── */}
         <section
           id="seccion-chat"
           aria-label="Chat con el asistente virtual"
