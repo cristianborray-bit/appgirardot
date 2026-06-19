@@ -408,7 +408,7 @@ export default function Home() {
             ))}
           </div>
           <a
-            href="https://www.google.com/maps/search/Aqualina+Orange+Girardot"
+            href="https://www.google.com/maps/search/?api=1&query=4.3012513,-74.8262115"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 flex h-12 w-full items-center justify-center rounded-[14px] bg-arena-bg text-[13.5px] font-bold text-arena-dark"
