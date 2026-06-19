@@ -134,6 +134,18 @@ La Fase 5 añade además la auditoría completa con la skill `security-review`.
 
 **Entregable:** pauta activa, leads entrando solos
 
+## FASE 7 — Rediseño visual "Arena" `[estado: 🔄 en curso — R0 completada y pusheada, esperando OK para R1]`
+
+Cristian entregó un diseño hi-fi documentado (paquete "Concepto A · Arena": README + HTML de referencia) para renovar la landing pública. Se ejecuta en 4 sub-fases (R0-R3), cada una con el mismo gate de cierre que el resto de este plan (app verificada corriendo + revisión de código + auditoría de diseño si hubo interfaz + commit/push + OK explícito de Cristian antes de abrir la siguiente). Decisiones ya tomadas con Cristian: fiel al diseño tal cual (no simplificar por legibilidad), el formulario de contacto lleva al chat en vez de ser su propio flujo, diseño ancho dedicado para escritorio (no solo el mockup de celular estirado), y primero un link de prueba antes de tocar producción.
+
+- [x] **R0 · Cimientos de diseño (completada, modelo Sonnet):** paleta, tipografía, radios, sombras y animaciones del diseño "Arena" como tokens nuevos en `globals.css` (prefijo `arena-*`, 100% aditivos: ningún token existente que usa `/admin` se tocó ni se borró). Fuentes Spectral (títulos) y Hanken Grotesk (texto) autohospedadas con `@fontsource`, igual que las fuentes actuales — sin depender de Google Fonts ni abrir la política de seguridad del sitio a dominios nuevos. Cero cambio visual: ningún componente usa los tokens todavía, eso llega con R1. Autocrítica antes de entregar: 2 valores que el README daba como rango (no como número exacto) se ajustaron al extremo que más se repite en los componentes reales del diseño, y se agregó la animación `riseIn` (se había dejado pendiente por error) porque el README sí le da un valor único y completo, a diferencia de las demás animaciones de entrada cuyo retraso varía según el elemento
+- [ ] R1 · Estructura y secciones: reconstruir `page.tsx` con las 15 secciones del diseño, fiel al píxel, con diseño ancho propio para escritorio y los assets optimizados para que carguen rápido en datos móviles
+- [ ] R2 · Reconectar lo vivo: vestir con los tokens "Arena" el chat, la captura de leads y la galería reales (los que ya funcionan en producción), sin tocar su lógica
+- [ ] R3 · Cierre: auditoría completa, link de prueba para que Cristian revise desde el celular, y despliegue a producción solo con su visto bueno final
+
+**Entregable parcial (R0):** base de tokens lista en la rama `claude/quirky-newton-eo5mp1` — sin ningún cambio visible todavía en el sitio
+**Pendiente de Cristian:** OK para arrancar R1 (y confirmar si sigue con Sonnet o pasa a Opus para esa fase)
+
 ---
 
 ## Pendientes de Cristian
