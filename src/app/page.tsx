@@ -381,7 +381,7 @@ export default function Home() {
               {
                 n: "1",
                 title: "Búscalo en Google Maps",
-                desc: "Escribe \"Aqualina Orange\" y verás el conjunto.",
+                desc: "Escribe “Aqualina Orange” y verás el conjunto.",
               },
               {
                 n: "2",
