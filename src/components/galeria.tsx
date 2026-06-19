@@ -134,6 +134,14 @@ export function Galeria() {
   // "reinicie" el error al cambiar de foto: simplemente se compara con
   // `abierta` al renderizar.
   const [errorGrande, setErrorGrande] = useState<number | null>(null);
+  // Proporción (ancho/alto) real de la foto abierta, medida al cargarla. El
+  // marco del visor la usa para adoptar la forma exacta de cada foto — así
+  // las horizontales y las verticales llenan el marco en vez de dejar
+  // huecos. null mientras no se conoce (o si la foto falló): se usa el
+  // marco fijo de respaldo, que nunca se ve roto.
+  const [proporcionGrande, setProporcionGrande] = useState<number | null>(
+    null,
+  );
   const ultimoTriggerRef = useRef<HTMLButtonElement | null>(null);
   const dialogoRef = useRef<HTMLDivElement>(null);
 
@@ -143,15 +151,18 @@ export function Galeria() {
   }, []);
 
   const anterior = useCallback(() => {
+    setProporcionGrande(null);
     setAbierta((i) => (i === null ? null : (i - 1 + FOTOS.length) % FOTOS.length));
   }, []);
 
   const siguiente = useCallback(() => {
+    setProporcionGrande(null);
     setAbierta((i) => (i === null ? null : (i + 1) % FOTOS.length));
   }, []);
 
   const abrir = useCallback((indice: number, trigger: HTMLButtonElement) => {
     ultimoTriggerRef.current = trigger;
+    setProporcionGrande(null);
     setAbierta(indice);
   }, []);
 
@@ -286,7 +297,24 @@ export function Galeria() {
             onClick={(e) => e.stopPropagation()}
             className="flex flex-col items-center gap-3"
           >
-            <div className="relative h-[78dvh] w-[90vw]">
+            <div
+              className={
+                proporcionGrande
+                  ? "relative transition-all duration-300 ease-out"
+                  : "relative h-[78dvh] w-[90vw]"
+              }
+              style={
+                proporcionGrande
+                  ? {
+                      // El límite de 1100px entra en las dos fórmulas (no como
+                      // max-width aparte) para que, al activarse, ancho y alto
+                      // sigan en la misma proporción que la foto real.
+                      width: `min(90vw, calc(78dvh * ${proporcionGrande}), 1100px)`,
+                      height: `min(78dvh, calc(90vw / ${proporcionGrande}), calc(1100px / ${proporcionGrande}))`,
+                    }
+                  : undefined
+              }
+            >
               {errorGrande === abierta ? (
                 <div className="flex h-full w-full items-center justify-center rounded-arena-sm bg-white/10 text-center text-white">
                   No se pudo cargar esta foto.
@@ -298,6 +326,12 @@ export function Galeria() {
                   fill
                   sizes="90vw"
                   quality={90}
+                  onLoad={(e) => {
+                    const { naturalWidth, naturalHeight } = e.currentTarget;
+                    if (naturalWidth && naturalHeight) {
+                      setProporcionGrande(naturalWidth / naturalHeight);
+                    }
+                  }}
                   onError={() => setErrorGrande(abierta)}
                   className="rounded-arena-xs object-contain"
                 />
