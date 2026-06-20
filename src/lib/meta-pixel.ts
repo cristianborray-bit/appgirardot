@@ -14,3 +14,13 @@ declare global {
 export function trackLead() {
   window.fbq?.("track", "Lead");
 }
+
+// Se llama UNA vez por visita, cuando la persona envía su PRIMER mensaje al
+// bot. Es el eslabón que faltaba en el embudo: distingue a quien de verdad
+// inició una conversación de quien solo entró y se fue (PageView). Sirve para
+// medir dónde se cae la gente y para que Meta pueda optimizar por visitantes
+// que conversan, no por el clic más barato. Evento personalizado: aparece solo
+// en Events Manager y desde ahí se puede crear una conversión para la pauta.
+export function trackIniciaChat() {
+  window.fbq?.("trackCustom", "IniciaChat");
+}

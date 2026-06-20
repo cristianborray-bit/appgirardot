@@ -21,6 +21,7 @@ import {
   leadEnviadoServerSnapshot,
 } from "@/lib/chat-content";
 import { CapturaLead } from "@/components/lead-form";
+import { trackIniciaChat } from "@/lib/meta-pixel";
 
 // El servidor responde sus límites con textos amigables en español; cuando el
 // mensaje parece eso (corto y sin restos técnicos) se muestra tal cual como
@@ -158,9 +159,18 @@ export function Chat({
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, status, capturaVisible]);
 
+  // Marca el evento "inició chat" una sola vez por visita: solo en el primer
+  // mensaje real del usuario. Si la sesión se retomó con mensajes previos
+  // (hasUserMessage), no se vuelve a disparar: ya había conversado antes.
+  const iniciaChatRef = useRef(false);
+
   function send(text: string) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
+    if (!iniciaChatRef.current && !hasUserMessage) {
+      iniciaChatRef.current = true;
+      trackIniciaChat();
+    }
     sendMessage({ text: trimmed });
     setInput("");
   }
