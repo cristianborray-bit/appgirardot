@@ -24,3 +24,11 @@ export function trackLead() {
 export function trackIniciaChat() {
   window.fbq?.("trackCustom", "IniciaChat");
 }
+
+// Se llama UNA vez por visita cuando la persona abre el chat (en celular,
+// donde empieza oculto detrás de un botón). Es el paso anterior a
+// IniciaChat: sirve para distinguir si alguien que vio el anuncio ni
+// siquiera llegó a abrir el chat, o si lo abrió y no escribió nada.
+export function trackChatAbierto() {
+  window.fbq?.("trackCustom", "ChatAbierto");
+}

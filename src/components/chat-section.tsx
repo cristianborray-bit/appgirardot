@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Chat } from "@/components/chat";
+import { trackChatAbierto } from "@/lib/meta-pixel";
 
 // En computador el chat vive incrustado junto al título, como siempre.
 // En celular se ve una tarjeta de invitación; al tocarla, el MISMO chat
@@ -12,6 +13,18 @@ export function ChatSection() {
   const [abierto, setAbierto] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
   const abrirRef = useRef<HTMLButtonElement>(null);
+  // Solo en celular existe un paso real de "abrir": en computador el chat
+  // ya está visible desde que carga la página. Se marca una sola vez por
+  // visita aunque la persona cierre y vuelva a abrir el chat.
+  const chatAbiertoRef = useRef(false);
+
+  function abrir() {
+    if (!chatAbiertoRef.current) {
+      chatAbiertoRef.current = true;
+      trackChatAbierto();
+    }
+    setAbierto(true);
+  }
 
   function cerrar() {
     setAbierto(false);
@@ -74,7 +87,7 @@ export function ChatSection() {
           <button
             ref={abrirRef}
             type="button"
-            onClick={() => setAbierto(true)}
+            onClick={abrir}
             className="mt-4 h-14 w-full rounded-arena-sm bg-arena-dark px-6 text-lg font-bold text-arena-bg hover:bg-arena-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent"
           >
             💬 Abrir el chat
@@ -105,7 +118,7 @@ export function ChatSection() {
       {!abierto && (
         <button
           type="button"
-          onClick={() => setAbierto(true)}
+          onClick={abrir}
           aria-label="Abrir el chat"
           className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-arena-dark text-2xl text-arena-bg shadow-arena-float hover:bg-arena-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent lg:hidden"
         >
