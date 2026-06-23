@@ -92,7 +92,7 @@ function FotoTile({
 
   return (
     <li
-      className={`relative overflow-hidden rounded-2xl border border-agua-borde bg-agua ${span}`}
+      className={`relative overflow-hidden rounded-arena-sm border border-arena-border bg-arena-bg ${span}`}
     >
       <button
         type="button"
@@ -101,7 +101,7 @@ function FotoTile({
         className="group absolute inset-0 h-full w-full"
       >
         {error ? (
-          <span className="absolute inset-0 flex items-center justify-center px-2 text-center text-sm text-magdalena-suave">
+          <span className="absolute inset-0 flex items-center justify-center px-2 text-center text-sm text-arena-text-muted">
             No se pudo cargar
           </span>
         ) : (
@@ -115,9 +115,9 @@ function FotoTile({
             className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
           />
         )}
-        <span className="absolute inset-0 bg-magdalena/0 transition-colors group-hover:bg-magdalena/10" />
+        <span className="absolute inset-0 bg-arena-dark/0 transition-colors group-hover:bg-arena-dark/10" />
         {!error && (
-          <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-magdalena opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+          <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-arena-surface/90 text-arena-dark opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
             <ExpandirIcono />
           </span>
         )}
@@ -134,6 +134,14 @@ export function Galeria() {
   // "reinicie" el error al cambiar de foto: simplemente se compara con
   // `abierta` al renderizar.
   const [errorGrande, setErrorGrande] = useState<number | null>(null);
+  // Proporción (ancho/alto) real de la foto abierta, medida al cargarla. El
+  // marco del visor la usa para adoptar la forma exacta de cada foto — así
+  // las horizontales y las verticales llenan el marco en vez de dejar
+  // huecos. null mientras no se conoce (o si la foto falló): se usa el
+  // marco fijo de respaldo, que nunca se ve roto.
+  const [proporcionGrande, setProporcionGrande] = useState<number | null>(
+    null,
+  );
   const ultimoTriggerRef = useRef<HTMLButtonElement | null>(null);
   const dialogoRef = useRef<HTMLDivElement>(null);
 
@@ -143,15 +151,18 @@ export function Galeria() {
   }, []);
 
   const anterior = useCallback(() => {
+    setProporcionGrande(null);
     setAbierta((i) => (i === null ? null : (i - 1 + FOTOS.length) % FOTOS.length));
   }, []);
 
   const siguiente = useCallback(() => {
+    setProporcionGrande(null);
     setAbierta((i) => (i === null ? null : (i + 1) % FOTOS.length));
   }, []);
 
   const abrir = useCallback((indice: number, trigger: HTMLButtonElement) => {
     ultimoTriggerRef.current = trigger;
+    setProporcionGrande(null);
     setAbierta(indice);
   }, []);
 
@@ -189,16 +200,16 @@ export function Galeria() {
   return (
     <section
       aria-label="Fotos y video del apartamento"
-      className="mx-auto w-full max-w-6xl px-4 py-10"
+      className="px-[18px] pt-[22px] pb-4 lg:px-0"
     >
-      <p className="text-sm font-bold uppercase tracking-widest text-mango-oscuro">
+      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-arena-accent">
         Fotos y video
       </p>
-      <h2 className="text-balance font-display text-3xl font-semibold">
+      <h2 className="font-arena-display text-[22px] font-medium tracking-[-0.01em]">
         Conócelo por dentro
       </h2>
       {FOTOS.length > 0 && (
-        <p className="mt-1 text-magdalena-suave">
+        <p className="mt-[7px] text-[12.5px] leading-[1.55] text-arena-text-mid">
           Toca cualquier foto para verla en grande.
         </p>
       )}
@@ -216,7 +227,7 @@ export function Galeria() {
         )}
 
         {VIDEO_ID && (
-          <li className="relative row-span-2 overflow-hidden rounded-2xl border border-agua-borde bg-magdalena">
+          <li className="relative row-span-2 overflow-hidden rounded-arena-sm border border-arena-border bg-arena-dark">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`}
               title="Video tour del apartamento"
@@ -244,7 +255,7 @@ export function Galeria() {
           <button
             type="button"
             onClick={() => setMostrarTodas(true)}
-            className="h-12 rounded-xl bg-mango-oscuro px-6 font-bold text-white hover:bg-magdalena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-oscuro"
+            className="h-12 rounded-arena-sm bg-arena-dark px-6 font-bold text-arena-bg hover:bg-arena-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-arena-accent"
           >
             Ver {restantes} fotos más
           </button>
@@ -259,13 +270,13 @@ export function Galeria() {
           aria-modal="true"
           aria-label={fotoAbierta.titulo}
           onClick={cerrar}
-          className="lightbox-fondo fixed inset-0 z-50 flex items-center justify-center bg-magdalena/95 p-4 outline-none backdrop-blur-sm"
+          className="lightbox-fondo fixed inset-0 z-50 flex items-center justify-center bg-arena-dark/95 p-4 outline-none backdrop-blur-sm"
         >
           <button
             type="button"
             onClick={cerrar}
             aria-label="Cerrar"
-            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-arena-dark/40 text-white hover:bg-arena-dark/60 active:bg-arena-dark/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <CerrarIcono />
           </button>
@@ -277,7 +288,7 @@ export function Galeria() {
               anterior();
             }}
             aria-label="Foto anterior"
-            className="absolute left-6 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute left-6 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-arena-dark/40 text-white hover:bg-arena-dark/60 active:bg-arena-dark/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <FlechaIcono direccion="izquierda" />
           </button>
@@ -286,9 +297,26 @@ export function Galeria() {
             onClick={(e) => e.stopPropagation()}
             className="flex flex-col items-center gap-3"
           >
-            <div className="relative h-[78dvh] w-[90vw]">
+            <div
+              className={
+                proporcionGrande
+                  ? "relative transition-all duration-300 ease-out"
+                  : "relative h-[78dvh] w-[90vw]"
+              }
+              style={
+                proporcionGrande
+                  ? {
+                      // El límite de 1100px entra en las dos fórmulas (no como
+                      // max-width aparte) para que, al activarse, ancho y alto
+                      // sigan en la misma proporción que la foto real.
+                      width: `min(90vw, calc(78dvh * ${proporcionGrande}), 1100px)`,
+                      height: `min(78dvh, calc(90vw / ${proporcionGrande}), calc(1100px / ${proporcionGrande}))`,
+                    }
+                  : undefined
+              }
+            >
               {errorGrande === abierta ? (
-                <div className="flex h-full w-full items-center justify-center rounded-xl bg-white/10 text-center text-white">
+                <div className="flex h-full w-full items-center justify-center rounded-arena-sm bg-white/10 text-center text-white">
                   No se pudo cargar esta foto.
                 </div>
               ) : (
@@ -298,8 +326,14 @@ export function Galeria() {
                   fill
                   sizes="90vw"
                   quality={90}
+                  onLoad={(e) => {
+                    const { naturalWidth, naturalHeight } = e.currentTarget;
+                    if (naturalWidth && naturalHeight) {
+                      setProporcionGrande(naturalWidth / naturalHeight);
+                    }
+                  }}
                   onError={() => setErrorGrande(abierta)}
-                  className="rounded-xl object-contain"
+                  className="rounded-arena-xs object-contain"
                 />
               )}
             </div>
@@ -318,7 +352,7 @@ export function Galeria() {
               siguiente();
             }}
             aria-label="Foto siguiente"
-            className="absolute right-6 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-magdalena/40 text-white hover:bg-magdalena/60 active:bg-magdalena/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute right-6 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-arena-dark/40 text-white hover:bg-arena-dark/60 active:bg-arena-dark/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <FlechaIcono direccion="derecha" />
           </button>
