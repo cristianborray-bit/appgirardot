@@ -32,3 +32,11 @@ export function trackIniciaChat() {
 export function trackChatAbierto() {
   window.fbq?.("trackCustom", "ChatAbierto");
 }
+
+// Se llama en CADA clic al botón de WhatsApp. A diferencia de los eventos
+// anteriores no se limita a una vez por visita: cada clic hacia WhatsApp es
+// una señal de intención de contacto directo distinta a abrir el chat, y no
+// es una acción que la persona repita sin querer.
+export function trackClicWhatsApp() {
+  window.fbq?.("trackCustom", "ClicWhatsApp");
+}
